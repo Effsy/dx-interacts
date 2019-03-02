@@ -15,4 +15,9 @@ contract dxInteracts {
         require(address(_dx) != address(0), "DutchExchange can't have address 0");
         dx = DutchExchange(_dx);  
     }
+
+    // TODO: Change function visibility to internal. Public in the meantime for debugging
+    function postSellOrder(address sellToken, address buyToken, uint amount) public {
+        dx.depositAndSell(sellToken, buyToken, amount);
+    }
 }
