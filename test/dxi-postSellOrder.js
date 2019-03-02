@@ -14,7 +14,7 @@ contract("dxInteracts", async accounts => {
                 DutchExchange: dx
             } = contracts)
         }
-    )
+    );
 
     it("should post sell order on dutchExchange", async () => {
         let dxi = await dxInteracts.deployed();
