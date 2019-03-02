@@ -1,8 +1,11 @@
 const dxInteracts = artifacts.require("./dxInteracts.sol");
+const DutchExchangeProxy = artifacts.require("DutchExchangeProxy");
 
-module.exports = async (deployer, network, accounts) => {  
-    dxAddress = "0x26ec4546B4265501591e46d806A76d91905f1787"
-    console.log('Deploying Safe with %s as the DutchExchange contract', dxAddress)
+module.exports = async (deployer, network, accounts) => {
 
-    await deployer.deploy(dxInteracts, dxAddress)
+    const dxProxy = await DutchExchangeProxy.deployed();
+    console.log("Deploying dxInteracts with %s as the DutchExchange contract", dxProxy.address);
+
+    const dxi = await deployer.deploy(dxInteracts, dxProxy.address);
+    console.log("dxi deployed at %s", dxi.address);
 }

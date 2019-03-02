@@ -6,7 +6,7 @@
 //    environment in a simpler way
 //  * For more details check out:
 //    https://github.com/gnosis/dx-contracts/blob/master/src/migrations-truffle-5/index.js
-const migrateDx = require('@gnosis.pm/dx-contracts/src/migrations-truffle-5')
+const migrateDx = require('@gnosis.pm/dx-contracts/src/migrations-truffle-5');
 
 module.exports = function (deployer, network, accounts) {
   return migrateDx({
@@ -17,5 +17,5 @@ module.exports = function (deployer, network, accounts) {
     web3,
     thresholdNewTokenPairUsd: process.env.THRESHOLD_NEW_TOKEN_PAIR_USD,
     thresholdAuctionStartUsd: process.env.THRESHOLD_AUCTION_START_USD
-  })
+  });
 }

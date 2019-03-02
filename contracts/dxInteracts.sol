@@ -16,22 +16,8 @@ contract dxInteracts {
         dx = DutchExchange(_dx);  
     }
 
-
-    // 2. We create the function that uses DutchX as a price feed
-    function getBalanceInUsd (address token) public view returns (uint, uint) {
-        uint pricetNum;
-        uint priceDen;
-        // Get the price in ETH for a token
-        (pricetNum, priceDen) = dx.getPriceOfTokenInLastAuction(token);
-
-        // Get the price of ETH
-        PriceOracleInterface priceOracle = PriceOracleInterface(dx.ethUSDOracle());
-        uint etherUsdPrice = priceOracle.getUSDETHPrice();
-        // uint etherUsdPrice = 400 ether;
-
-        // Return the price in USD:
-        //    balance * Price TOKEN-ETH * price ETH-USD
-        uint balance = balances[token];
-        return (balance * pricetNum * etherUsdPrice, priceDen);
+    // TODO: Change function visibility to internal. Public in the meantime for debugging
+    function postSellOrder(address sellToken, address buyToken, uint amount) public {
+        dx.depositAndSell(sellToken, buyToken, amount);
     }
 }
