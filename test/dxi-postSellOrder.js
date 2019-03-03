@@ -1,8 +1,18 @@
 const dxInteracts = artifacts.require("dxInteracts");
-const { getContracts, setupTest, wait } = require("@gnosis.pm/dx-contracts/test/testFunctions")
+const { getContracts, setupTest, wait } = require("@gnosis.pm/dx-contracts/test/testFunctions");
 
 contract("dxInteracts", async accounts => {
 
+    const startBal = {
+        startingETH: 0,
+        startingGNO: 90.0.toWei().toString(),
+        // TODO: find clean solution. 
+        // ether.js has its own bn implementation
+        // 100 times smaller than usual price, reduced to surpress bignumber parse error
+        ethUSDPrice: 11.0.toWei().toString(),
+        sellingAmount: 50.0.toWei().toString()
+    }
+    
     before(
         async () => {
             contracts = await getContracts();
@@ -13,6 +23,8 @@ contract("dxInteracts", async accounts => {
                 TokenFRT: mgn,
                 DutchExchange: dx
             } = contracts)
+
+            await setupTest(accounts, contracts, startBal)
         }
     );
 
