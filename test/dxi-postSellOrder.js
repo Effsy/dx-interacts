@@ -33,6 +33,6 @@ contract("dxInteracts", async accounts => {
 
         // TODO: read from dx contract
         let sellOrderPostEventEmitted = false
-        assert.equal(sellOrderPostEventEmitted, false);
+        assert.equal(sellOrderPostEventEmitted, true);
     });
 });
