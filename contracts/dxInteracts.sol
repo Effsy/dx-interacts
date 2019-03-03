@@ -12,9 +12,13 @@ contract dxInteracts is DxInterface {
         ethToken = WETH(_ethToken);
     }
 
-    function sellEther(address buyToken) external payable  {
+    function sellEther(address buyToken) 
+        external 
+        payable
+        returns (uint newBal, uint auctionIndex, uint newSellerBal)
+    {
         ethToken.deposit.value(msg.value)();
         ethToken.approve(address(dx), msg.value);
-        DxInterface.depositAndSell(address(ethToken), buyToken, msg.value);
+        return DxInterface.depositAndSell(address(ethToken), buyToken, msg.value);
     }
 }
