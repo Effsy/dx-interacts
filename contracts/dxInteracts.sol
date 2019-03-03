@@ -29,5 +29,6 @@ contract dxInteracts is DxInterface {
     {
         (returned, frtsIssued, newBal) = DxInterface.claimAndWithdraw(sellToken, buyToken, user, auctionIndex, amount);
         Token(buyToken).transfer(user, amount);
+        return (returned, frtsIssued, newBal);
     }
 }
