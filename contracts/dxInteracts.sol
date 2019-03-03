@@ -1,16 +1,16 @@
 pragma solidity ^0.5.2;
 
 import "./DxInterface.sol";
-import "./Weth.sol";
-import "./ERC20.sol";
+import "@gnosis.pm/util-contracts/contracts/EtherToken.sol";
+import "@gnosis.pm/util-contracts/contracts/Token.sol";
 
 contract dxInteracts is DxInterface {
 
-    WETH public ethToken;
+    EtherToken public ethToken;
 
     constructor(address _dx, address _ethToken) DxInterface(_dx) public {
         require(_ethToken != address(0), "The WETH address must be valid");
-        ethToken = WETH(_ethToken);
+        ethToken = EtherToken(_ethToken);
     }
 
     function sellEther(address buyToken) 
@@ -28,6 +28,6 @@ contract dxInteracts is DxInterface {
         returns (uint returned, uint frtsIssued, uint newBal)
     {
         (returned, frtsIssued, newBal) = claimAndWithdraw(sellToken, buyToken, user, auctionIndex, amount);
-        ERC20(buyToken).transfer(user, amount);
+        Token(buyToken).transfer(user, amount);
     }
 }
