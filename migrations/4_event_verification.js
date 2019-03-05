@@ -16,6 +16,8 @@ module.exports = async (deployer) => {
       .then(() => DepositEventVerifier.deployed)
       .then(() => deployer.deploy(EventFunction, Ion.address, DepositEventVerifier.address))
       .then(() => EventFunction.deployed)
+
+      console.log('Ion contracts deployed');
   } catch(err) {
     console.log('ERROR on deploy:',err);
   }
