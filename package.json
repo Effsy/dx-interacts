@@ -10,9 +10,14 @@
   "license": "ISC",
   "devDependencies": {
     "@gnosis.pm/dx-contracts": "^2.0.0",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "rlp": "^2.2.2",
     "truffle": "^5.0.4",
     "truffle-contract": "^4.0.5",
-    "truffle-hdwallet-provider": "^1.0.4"
+    "truffle-hdwallet-provider": "^1.0.4",
+    "web3": "^1.0.0-beta.47",
+    "web3-utils": "^1.0.0-beta.47"
   },
   "dependencies": {
     "@digix/tempo": "^0.2.0"
