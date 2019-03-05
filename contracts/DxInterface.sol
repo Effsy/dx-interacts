@@ -29,4 +29,16 @@ contract DxInterface {
     {
         return dx.claimAndWithdraw(sellToken, buyToken, user, auctionIndex, amount);
     }
+
+    function claimTokensFromSeveralAuctionsAsSeller(
+        address[] calldata auctionSellTokens,
+        address[] calldata auctionBuyTokens,
+        uint[] calldata auctionIndices,
+        address user
+    ) 
+        external 
+        returns (uint[] memory, uint[] memory)
+    {
+        return dx.claimTokensFromSeveralAuctionsAsSeller(auctionSellTokens, auctionBuyTokens, auctionIndices, user);
+    }
 }
