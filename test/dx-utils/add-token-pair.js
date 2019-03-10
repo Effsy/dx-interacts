@@ -18,35 +18,48 @@ async function main() {
     console.log(ethToken === weth.address);
 
     // const testingAccs = accounts.slice(1, 5);
-    const ETHBalance = 50..toWei();
+    const ETHBalance = 5000..toWei();
     const initialToken1Funding = 10..toWei();
     console.log("here")
     const tweth = await weth.deployed();
     const accs = await web3.eth.getAccounts();
 
-    accs.map(async acc => {
-        let balance = await tweth.balanceOf.call(acc)
-        console.log(balance.toString())
-    })
+    // accs.map(async acc => {
+    //     let balance = await tweth.balanceOf.call(acc)
+    //     // console.log(balance.toString())
+    // })
 
-    await Promise.all(accs.map(acc => Promise.all([
-        tweth.deposit({ from: acc, value: ETHBalance }),
-        tweth.approve(dxProxy.address, ETHBalance, { from: acc })
-    ])))
+    console.log("here1")
 
     accs.map(async acc => {
-        let balance = await tweth.balanceOf.call(acc)
-        console.log(balance.toString())
+        await tweth.deposit({ from: acc, value: ETHBalance })
+        await tweth.approve(dxProxy.address, ETHBalance, { from: acc })
+        await dxExchange.deposit(tweth.address, ETHBalance / 2, { from: acc });
     })
 
-    // await dxExchange.deposit(tweth.address, ETHBalance / 2, { from: acc });
+    console.log("threshold")
+    const threshold = await dxExchange.thresholdNewTokenPair();
+    console.log(threshold/10e18);
 
-    // accs.map(async acc => 
-    //     dxExchange.deposit(tweth.address, ETHBalance / 2, { from: acc })
-    // )
+    console.log("depoist held")
+    const balance = await dxExchange.balances.call(weth.address, accs[0])
+    console.log(balance.toString())
 
-    // dx.addTokenPair(eth.address, gno.address, initialToken1Funding, 0, 2, 1, { from: accounts[1] })
+
+    accs.map(async acc => {
+        let balance = await tweth.balanceOf.call(acc)
+        // console.log(balance.toString())
+    })
+
+
+    // const tx = await dxExchange.addTokenPair(tweth.address, gno.address, initialToken1Funding, 0, 2, 1);
+    console.log(gno.address)
+    const tx = await dxExchange.addTokenPair(weth.address, gno.address, initialToken1Funding, 0, 2, 1).send({from: accs[1]});
     
+    console.log(tx)
+
+    console.log("here4")
+    // NewTokenPair
 }
 
 module.exports = async function(callback) {
@@ -56,6 +69,6 @@ module.exports = async function(callback) {
         ethUSDPrice: 1008.0.toWei(),
         sellingAmount: 50.0.toWei()
     }
-
+    
     await main();
 }

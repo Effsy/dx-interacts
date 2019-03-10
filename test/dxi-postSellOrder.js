@@ -1,5 +1,5 @@
-const dxInteracts = artifacts.require("dxInteracts");
-const { getContracts, setupTest, wait } = require("@gnosis.pm/dx-contracts/test/testFunctions");
+const dxInteracts = artifacts.require("DxInteracts");
+const { getContracts, setupTest, wait } = require("testFunctions");
 
 contract("dxInteracts", async accounts => {
 
