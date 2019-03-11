@@ -1,4 +1,4 @@
-const dxInteracts = artifacts.require("./dxInteracts.sol");
+const dxInteracts = artifacts.require("./DxInteracts.sol");
 const DutchExchangeProxy = artifacts.require("DutchExchangeProxy");
 const EtherToken = artifacts.require('EtherToken');
 
