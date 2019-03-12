@@ -102,7 +102,7 @@ contract EthereumStore is BlockStore {
         bytes memory _parentNodes,
         bytes memory _path
     )
-        onlyExistingBlocks(_blockHash)
+        //onlyExistingBlocks(_blockHash)
         internal
         returns (bool)
     {
@@ -135,7 +135,7 @@ contract EthereumStore is BlockStore {
         bytes memory _parentNodes,
         bytes memory _path
     )
-        onlyExistingBlocks(_blockHash)
+        //onlyExistingBlocks(_blockHash)
         internal
         returns (bool)
     {
@@ -166,7 +166,7 @@ contract EthereumStore is BlockStore {
         bytes memory _txNodes,
         bytes memory _receiptNodes
     )
-        onlyExistingBlocks(_blockHash)
+        //onlyExistingBlocks(_blockHash)
         internal
         returns (bool)
     {
