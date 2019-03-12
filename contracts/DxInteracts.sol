@@ -5,7 +5,15 @@ import "@gnosis.pm/util-contracts/contracts/EtherToken.sol";
 import "@gnosis.pm/util-contracts/contracts/Token.sol";
 
 
-contract DxInteracts {
+contract DxInteracts is DxMath {
+
+    // Token => user => amount
+    // balances stores a user's balance held by DxInteracts in the DutchX
+    mapping(address => mapping(address => uint)) public balances;
+
+    // Token => Token =>  auctionIndex => user => amount
+    mapping(address => mapping(address => mapping(uint => mapping(address => uint)))) public sellerBalances;
+    mapping(address => mapping(address => mapping(uint => mapping(address => uint)))) public buyerBalances;
 
     DutchExchange public dx;
     EtherToken public ethToken;
@@ -19,55 +27,61 @@ contract DxInteracts {
     }
 
     function sellEther(address buyToken) 
-        external
+        public
         payable
         // returns (bool)
-        returns (uint newBal, uint auctionIndex, uint newSellerBal)
+        returns (uint auctionIndex, uint newSellerBal)
     {
         ethToken.deposit.value(msg.value)();
         require(ethToken.approve(address(dx), msg.value), "fail to approve eth token");
-        // Refactor: make depositToken internal and call it from here
-        return dx.depositAndSell(address(ethToken), buyToken, msg.value);
+        depositToken(address(ethToken), msg.value);
+        return postSellOrder(address(ethToken), buyToken, 0, msg.value);
     }
 
     function depositToken(address _token, uint _amount)
-        external
-        returns (uint)
+        public
+        returns (uint newBal)
     {
         Token(_token).approve(address(dx), _amount);
-        return dx.deposit(_token, _amount);
+        newBal = dx.deposit(_token, _amount);
+        balances[_token][msg.sender] = newBal;
     }
 
     function depositEther()
-        external
+        public
         payable
+        returns (uint newBal)
     {
         ethToken.deposit.value(msg.value)();
         ethToken.approve(address(dx), msg.value);
-        dx.deposit(address(ethToken), msg.value);
+        newBal = depositToken(address(ethToken), msg.value);
     }
 
     function depositAndSell(address sellToken, address buyToken, uint _amount)
-        external
-        returns (uint newBal, uint auctionIndex, uint newSellerBal)
+        public
+        returns (uint auctionIndex, uint newSellerBal)
     {
-        // allowance must have been set on the sell token
         // check dx's SafeTransfer.sol
         Token(sellToken).approve(address(dx), _amount);
-        return dx.depositAndSell(sellToken, buyToken, _amount);
+        // TODO: Assess calling dx depositAndSell to save gas from saving state changes to balances
+        depositToken(sellToken, _amount);
+        return postSellOrder(sellToken, buyToken, 0, _amount);
     }
 
     function postSellOrder(address sellToken, address buyToken, uint auctionIndex, uint amount)
-        external
-        returns (uint, uint)
+        public
+        returns (uint newSellerBal, uint postedAuctionIndex)
     {
-        return dx.postSellOrder(sellToken, buyToken, auctionIndex, amount);
+        (newSellerBal, postedAuctionIndex) = dx.postSellOrder(sellToken, buyToken, auctionIndex, amount);
+        balances[sellToken][msg.sender] = sub(balances[sellToken][msg.sender], amount);
+        sellerBalances[sellToken][buyToken][auctionIndex][msg.sender] = newSellerBal;
     }
 
     function claimAuction(address sellToken, address buyToken, address user, uint auctionIndex, uint amount) 
-        external
+        public
         returns (uint returned, uint frtsIssued, uint newBal)
     {
+        // TODO: Check if user can actually claim
         (returned, frtsIssued, newBal) = dx.claimAndWithdraw(sellToken, buyToken, user, auctionIndex, amount);
         Token(buyToken).transfer(user, amount);
         return (returned, frtsIssued, newBal);
@@ -81,7 +95,7 @@ contract DxInteracts {
         uint initialClosingPriceNum,
         uint initialClosingPriceDen
     )
-        external
+        public
     {
         dx.addTokenPair(
             token1, 
