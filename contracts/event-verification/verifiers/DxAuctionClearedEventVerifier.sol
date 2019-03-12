@@ -7,9 +7,9 @@ import "../libraries/SolidityUtils.sol";
 import "./EventVerifier.sol";
 
 /*
-    NewDepositEventVerifier
+    DxAuctionClearedEventVerifier
 
-    Inherits from `EventVerifier` and verifies `NewDeposit` events.
+    Inherits from `EventVerifier` and verifies `Deposit` events.
 
     From the provided logs, we separate the data and define checks to assert certain information in the event and
     returns `true` if successful.
@@ -18,8 +18,8 @@ import "./EventVerifier.sol";
     supplied events with similarly supplied expected outcomes. It is only meant to serve as a utility to perform defined
     checks against specific events.
 */
-contract NewDepositEventVerifier is EventVerifier {
-    bytes32 eventSignature = keccak256("NewDeposit(address indexed token, uint amount)");
+contract DxAuctionClearedEventVerifier is EventVerifier {
+    bytes32 eventSignature = keccak256("AuctionCleared(sellToken,buyToken,sellVolume,buyVolume,auctionIndex)");
 
     function verify(bytes20 _contractEmittedAddress, bytes memory _rlpReceipt, bytes20 _expectedAddress) public view returns (bool) {
         // Retrieve specific log for given event signature
@@ -40,8 +40,12 @@ contract NewDepositEventVerifier is EventVerifier {
         parameter in the event from our function call. This acts as our conditional check that the event called is what
         the user expects.
         */
-        bytes20 b20_address = SolUtils.BytesToBytes20(data, data.length - 20);
-        return b20_address == _expectedAddress;
+
+        // TODO: Verify event data
+
+        //bytes20 b20_address = SolUtils.BytesToBytes20(data, data.length - 20);
+        //return b20_address == _expectedAddress;
+        return true;
     }
 
 }
