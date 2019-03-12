@@ -17,16 +17,15 @@ contract Base is IonCompatible {
         ion.addChain(_storeAddr, _chainId);
     }
 
-    function SubmitBlock(bytes32 _chainId, bytes memory _rlpBlock, address _storageAddr) public {
-        storeBlock(_chainId, _rlpBlock, _storageAddr);
+    function SubmitBlock(bytes memory _rlpBlock, address _storageAddr) public {
+        storeBlock(_rlpBlock, _storageAddr);
     }
 
     function storeBlock(
-        bytes32 _chainId,
         bytes memory _rlpBlock,
         address _storageAddr
     ) internal {
         // Add block to Ion
-        ion.storeBlock(_storageAddr, _chainId, _rlpBlock);
+        ion.storeBlock(_storageAddr, _rlpBlock);
     }
 }

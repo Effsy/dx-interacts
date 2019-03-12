@@ -22,8 +22,8 @@ contract Ion {
     * The deployer must assert that the id is indeed public and that it is not already being used
     * by another chain
     */
-    constructor(bytes32 _id) public {
-        chainId = _id;
+    constructor() public {
+        
     }
 
     /*
@@ -64,10 +64,10 @@ contract Ion {
     * param:
     *
     */
-    function storeBlock(address _storageAddress, bytes32 _chainId, bytes memory _blockBlob) public onlyRegisteredValidation  {
+    function storeBlock(address _storageAddress, bytes memory _blockBlob) public onlyRegisteredValidation  {
         require(isContract(_storageAddress), "Storage address provided is not contract.");
         BlockStore store = BlockStore(_storageAddress);
 
-        store.addBlock(_chainId, _blockBlob);
+        store.addBlock(_blockBlob);
     }
 }

@@ -52,7 +52,7 @@ contract BlockStore is IonCompatible {
         return true;
     }
 
-    function addBlock(bytes32 _chainId, bytes memory _blockBlob) public onlyIon onlyRegisteredChains(_chainId){
+    function addBlock(bytes memory _blockBlob) public onlyIon {
 
     }
 }

@@ -26,8 +26,8 @@ contract EthereumStore is BlockStore {
 
     enum ProofType { TX, RECEIPT, ROOTS }
 
-    event BlockAdded(bytes32 chainId, bytes32 blockHash);
-    event VerifiedProof(bytes32 chainId, bytes32 blockHash, uint proofType);
+    event BlockAdded(bytes32 blockHash);
+    event VerifiedProof(bytes32 blockHash, uint proofType);
 
     constructor(address _ionAddr) BlockStore(_ionAddr) public {}
 
@@ -50,10 +50,9 @@ contract EthereumStore is BlockStore {
     * @param _blockHash     Block hash of the block being added
     * @param _blockBlob     Bytes blob of the RLP-encoded block header being added
     */
-    function addBlock(bytes32 _chainId, bytes memory _blockBlob)
+    function addBlock(bytes memory _blockBlob)
         public
         onlyIon
-        onlyRegisteredChains(_chainId)
     {
         bytes32 blockHash = keccak256(_blockBlob);
         require(!m_blockhashes[blockHash], "Block already exists" );
@@ -65,17 +64,17 @@ contract EthereumStore is BlockStore {
         m_blockheaders[blockHash].txRootHash = header[4].toBytes32();
         m_blockheaders[blockHash].receiptRootHash = header[5].toBytes32();
 
-        emit BlockAdded(_chainId, blockHash);
+        emit BlockAdded(blockHash);
     }
 
-    function CheckProofs(bytes32 _chainId, bytes32 _blockHash, bytes memory _proof) public returns (bytes memory) {
+    function CheckProofs(bytes32 _blockHash, bytes memory _proof) public returns (bytes memory) {
         RLP.RLPItem[] memory proof = _proof.toRLPItem().toList();
 
         require(proof.length == 5, "Malformed proof");
 
-        assert(CheckRootsProof(_chainId, _blockHash, proof[2].toBytes(), proof[4].toBytes()));
-        assert(CheckTxProof(_chainId, _blockHash, proof[1].toBytes(), proof[2].toBytes(), proof[0].toBytes()));
-        assert(CheckReceiptProof(_chainId, _blockHash, proof[3].toBytes(), proof[4].toBytes(), proof[0].toBytes()));
+        assert(CheckRootsProof(_blockHash, proof[2].toBytes(), proof[4].toBytes()));
+        assert(CheckTxProof(_blockHash, proof[1].toBytes(), proof[2].toBytes(), proof[0].toBytes()));
+        assert(CheckReceiptProof(_blockHash, proof[3].toBytes(), proof[4].toBytes(), proof[0].toBytes()));
 
         return proof[3].toBytes();
     }
@@ -98,20 +97,18 @@ contract EthereumStore is BlockStore {
     * the proof is for has been submitted.
     */
     function CheckTxProof(
-        bytes32 _chainId,
         bytes32 _blockHash,
         bytes memory _value,
         bytes memory _parentNodes,
         bytes memory _path
     )
-        onlyRegisteredChains(_chainId)
         onlyExistingBlocks(_blockHash)
         internal
         returns (bool)
     {
         verifyProof(_value, _parentNodes, _path, m_blockheaders[_blockHash].txRootHash);
 
-        emit VerifiedProof(_chainId, _blockHash, uint(ProofType.TX));
+        emit VerifiedProof(_blockHash, uint(ProofType.TX));
         return true;
     }
 
@@ -133,20 +130,18 @@ contract EthereumStore is BlockStore {
     * the proof is for has been submitted.
     */
     function CheckReceiptProof(
-        bytes32 _chainId,
         bytes32 _blockHash,
         bytes memory _value,
         bytes memory _parentNodes,
         bytes memory _path
     )
-        onlyRegisteredChains(_chainId)
         onlyExistingBlocks(_blockHash)
         internal
         returns (bool)
     {
         verifyProof(_value, _parentNodes, _path, m_blockheaders[_blockHash].receiptRootHash);
 
-        emit VerifiedProof(_chainId, _blockHash, uint(ProofType.RECEIPT));
+        emit VerifiedProof(_blockHash, uint(ProofType.RECEIPT));
         return true;
     }
 
@@ -167,12 +162,10 @@ contract EthereumStore is BlockStore {
     * the proof is for has been submitted.
     */
     function CheckRootsProof(
-        bytes32 _chainId,
         bytes32 _blockHash,
         bytes memory _txNodes,
         bytes memory _receiptNodes
     )
-        onlyRegisteredChains(_chainId)
         onlyExistingBlocks(_blockHash)
         internal
         returns (bool)
@@ -180,7 +173,7 @@ contract EthereumStore is BlockStore {
         assert( m_blockheaders[_blockHash].txRootHash == getRootNodeHash(_txNodes) );
         assert( m_blockheaders[_blockHash].receiptRootHash == getRootNodeHash(_receiptNodes) );
 
-        emit VerifiedProof(_chainId, _blockHash, uint(ProofType.ROOTS));
+        emit VerifiedProof(_blockHash, uint(ProofType.ROOTS));
         return true;
     }
 
