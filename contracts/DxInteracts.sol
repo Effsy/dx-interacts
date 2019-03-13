@@ -77,6 +77,28 @@ contract DxInteracts is DxMath {
         sellerBalances[sellToken][buyToken][auctionIndex][msg.sender] = newSellerBal;
     }
 
+    function claimSellerFunds(address sellToken, address buyToken, address user, uint auctionIndex)
+        public
+        returns (uint returned, uint frtsIssued)
+    {
+        (returned, frtsIssued) = dx.claimSellerFunds(sellToken, buyToken, address(this), auctionIndex);
+    }
+    
+    function withdraw(address tokenAddress, uint amount)
+        public
+        returns (uint newBal)
+    {
+        uint usersBalance = balances[tokenAddress][msg.sender];
+        amount = min(amount, usersBalance);
+        
+        // TODO: Fix negative balances
+        // require(amount > 0, "The amount must be greater than 0");
+
+        newBal = dx.withdraw(tokenAddress, amount);
+        balances[tokenAddress][msg.sender] = newBal;
+        Token(tokenAddress).transfer(msg.sender, amount);
+    }
+
     function claimAuction(address sellToken, address buyToken, address user, uint auctionIndex, uint amount) 
         public
         returns (uint returned, uint frtsIssued, uint newBal)
