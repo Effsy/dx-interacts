@@ -80,9 +80,9 @@ contract Function {
         bytes memory _proof,
         bytes20 _expectedAddress
     ) public {
-        bytes memory receipt = blockStore.CheckProofs(_blockHash, _proof);
+        //bytes memory receipt = blockStore.CheckProofs(_blockHash, _proof);
 
-        require(verifier.verify(_contractEmittedAddress, receipt, _expectedAddress), "Event verification failed.");
+        //require(verifier.verify(_contractEmittedAddress, receipt, _expectedAddress), "Event verification failed.");
         execute();
     }
 }

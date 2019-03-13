@@ -75,10 +75,10 @@ contract DxiClaimAuction {
         //bytes20 _contractEmittedAddress,
         //bytes20 _expectedAddress
     ) public {
-        bytes memory receipt = blockStore.CheckProofs(_blockHash, _proof);
+        blockStore.CheckProofs(_blockHash, _proof);
 
         //require(verifier.verify(_contractEmittedAddress, receipt, _expectedAddress), "Event verification failed.");
-        dxInteracts.claimAuction(sellToken, buyToken, user, auctionIndex, amount);
+        //dxInteracts.claimAuction(sellToken, buyToken, user, auctionIndex, amount);
     }
 }
 
