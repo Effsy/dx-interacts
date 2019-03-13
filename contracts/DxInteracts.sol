@@ -5,7 +5,7 @@ import "@gnosis.pm/util-contracts/contracts/EtherToken.sol";
 import "@gnosis.pm/util-contracts/contracts/Token.sol";
 
 
-contract DxInteracts is DxMath {
+contract DxInteracts is DxMath, SafeTransfer {
 
     // Token => user => amount
     // balances stores a user's balance held by DxInteracts in the DutchX
@@ -88,25 +88,9 @@ contract DxInteracts is DxMath {
         public
         returns (uint newBal)
     {
-        uint usersBalance = balances[tokenAddress][msg.sender];
-        amount = min(amount, usersBalance);
-        
-        // TODO: Fix negative balances
-        // require(amount > 0, "The amount must be greater than 0");
-
         newBal = dx.withdraw(tokenAddress, amount);
-        balances[tokenAddress][msg.sender] = newBal;
-        Token(tokenAddress).transfer(msg.sender, amount);
-    }
-
-    function claimAuction(address sellToken, address buyToken, address user, uint auctionIndex, uint amount) 
-        public
-        returns (uint returned, uint frtsIssued, uint newBal)
-    {
-        // TODO: Check if user can actually claim
-        (returned, frtsIssued, newBal) = dx.claimAndWithdraw(sellToken, buyToken, user, auctionIndex, amount);
-        Token(buyToken).transfer(user, amount);
-        return (returned, frtsIssued, newBal);
+        // TODO: Check that user actually holds the funds
+        require(safeTransfer(tokenAddress, msg.sender, amount, false), "The withdraw transfer must succeed");
     }
 
     function addTokenPair(
