@@ -5,7 +5,7 @@ pragma solidity ^0.5.2;
 import "./storage/EthereumStore.sol";
 import "../DxInteracts.sol";
 
-contract DxAuctionClearedEventVerifier {
+contract EventEmitterVerifier {
     function verify(bytes20 _contractEmittedAddress, bytes memory _rlpReceipt, bytes20 _expectedAddress) public returns (bool);
 }
 
@@ -24,16 +24,16 @@ contract DxAuctionClearedEventVerifier {
     This would also bloat the local scope which is prone to 'stack too deep' issues which would require custom
     workarounds.
 */
-contract DxiClaimAuction {
+contract DxiTriggerPostSellOrder {
     EthereumStore blockStore;
     DxInteracts public dxInteracts;
 
-    DxAuctionClearedEventVerifier verifier;
+    EventEmitterVerifier verifier;
 
     constructor(address _storeAddr, address _verifierAddr, address _dxInteractsAddr) public {
         blockStore = EthereumStore(_storeAddr);
         dxInteracts = DxInteracts(_dxInteractsAddr);
-        verifier = DxAuctionClearedEventVerifier(_verifierAddr);
+        verifier = EventEmitterVerifier(_verifierAddr);
     }
 
     /*  
@@ -69,7 +69,6 @@ contract DxiClaimAuction {
         bytes memory _proof,
         address sellToken,
         address buyToken,
-        address user,
         uint auctionIndex,
         uint amount
         //bytes20 _contractEmittedAddress,
@@ -78,7 +77,7 @@ contract DxiClaimAuction {
         bytes memory receipt = blockStore.CheckProofs(_blockHash, _proof);
 
         //require(verifier.verify(_contractEmittedAddress, receipt, _expectedAddress), "Event verification failed.");
-        //dxInteracts.claimAuction(sellToken, buyToken, user, auctionIndex, amount);
+        dxInteracts.postSellOrder(sellToken, buyToken, auctionIndex, amount);
     }
 }
 

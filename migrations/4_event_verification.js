@@ -3,7 +3,10 @@ const Base = artifacts.require("Base");
 const EthereumStore = artifacts.require("EthereumStore");
 const DxiClaimAuction = artifacts.require("DxiClaimAuction");
 const DxAuctionClearedEventVerifier = artifacts.require("DxAuctionClearedEventVerifier");
+const DxiTriggerPostSellOrder = artifacts.require("DxiTriggerPostSellOrder");
+const EventEmitterVerifier = artifacts.require("EventEmitterVerifier");
 const DxInteracts = artifacts.require("DxInteracts");
+const EventEmitter = artifacts.require("EventEmitter");
 
 module.exports = async (deployer) => {
   try {
@@ -17,6 +20,12 @@ module.exports = async (deployer) => {
       .then(() => DxAuctionClearedEventVerifier.deployed)
       .then(() => deployer.deploy(DxiClaimAuction, EthereumStore.address, DxAuctionClearedEventVerifier.address, DxInteracts.address))
       .then(() => DxiClaimAuction.deployed)
+      .then(() => deployer.deploy(EventEmitter))
+      .then(() => EventEmitter.deployed)
+      .then(() => deployer.deploy(EventEmitterVerifier))
+      .then(() => EventEmitterVerifier.deployed)
+      .then(() => deployer.deploy(DxiTriggerPostSellOrder, EthereumStore.address, EventEmitterVerifier.address, DxInteracts.address))
+      .then(() => DxiTriggerPostSellOrder.deployed)
 
       console.log('Ion contracts deployed');
   } catch(err) {

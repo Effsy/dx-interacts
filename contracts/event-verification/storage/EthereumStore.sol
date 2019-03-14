@@ -4,14 +4,15 @@ pragma solidity ^0.5.2;
 
 import "../libraries/ECVerify.sol";
 import "../libraries/RLP.sol";
+import "../libraries/RLPReader.sol";
 import "../libraries/PatriciaTrie.sol";
 import "../libraries/SolidityUtils.sol";
 import "./BlockStore.sol";
 
 contract EthereumStore is BlockStore {
-    using RLP for RLP.RLPItem;
-    using RLP for RLP.Iterator;
-    using RLP for bytes;
+    using RLPReader for RLPReader.RLPItem;
+    using RLPReader for RLP.Iterator;
+    using RLPReader for bytes;
 
     /*
     *   @description    BlockHeader struct containing trie root hashes for tx verifications
@@ -54,29 +55,29 @@ contract EthereumStore is BlockStore {
         public
         onlyIon
     {
-        bytes32 blockHash = keccak256(_blockBlob);
-        require(!m_blockhashes[blockHash], "Block already exists" );
+        // bytes32 blockHash = keccak256(_blockBlob);
+        // require(!m_blockhashes[blockHash], "Block already exists" );
 
-        RLP.RLPItem[] memory header = _blockBlob.toRLPItem().toList();
-        require(header.length == 15, "Block Header parameter mismatch");
+        // RLP.RLPItem[] memory header = _blockBlob.toRLPItem().toList();
+        // require(header.length == 15, "Block Header parameter mismatch");
 
-        m_blockhashes[blockHash] = true;
-        m_blockheaders[blockHash].txRootHash = header[4].toBytes32();
-        m_blockheaders[blockHash].receiptRootHash = header[5].toBytes32();
+        // m_blockhashes[blockHash] = true;
+        // m_blockheaders[blockHash].txRootHash = header[4].toBytes32();
+        // m_blockheaders[blockHash].receiptRootHash = header[5].toBytes32();
 
-        emit BlockAdded(blockHash);
+        //emit BlockAdded(blockHash);
     }
-    event Proofs(bytes proofs);
     
-    function CheckProofs(bytes32 _blockHash, bytes memory _proof) public {
-        RLP.RLPItem[] memory proof = _proof.toRLPItem().toList();
+    function CheckProofs(bytes32 _blockHash, bytes memory _proof) public returns (bytes memory){
+        RLPReader.RLPItem[] memory proof = RLPReader.toRlpItem(_proof).toList();
 
-        //require(proof.length == 5, "Malformed proof");
-        bytes memory proofs = proof[3].toBytes();
-        //assert(CheckRootsProof(_blockHash, proof[2].toBytes(), proof[4].toBytes()));
-        //assert(CheckTxProof(_blockHash, proof[1].toBytes(), proof[2].toBytes(), proof[0].toBytes()));
-        //assert(CheckReceiptProof(_blockHash, proof[3].toBytes(), proof[4].toBytes(), proof[0].toBytes()));
-        emit Proofs(proofs);
+        require(proof.length == 5, "Malformed proof");
+
+        assert(CheckRootsProof(_blockHash, proof[2].toBytes(), proof[4].toBytes()));
+        assert(CheckTxProof(_blockHash, proof[1].toBytes(), proof[2].toBytes(), proof[0].toBytes()));
+        assert(CheckReceiptProof(_blockHash, proof[3].toBytes(), proof[4].toBytes(), proof[0].toBytes()));
+        
+        return proof[3].toBytes();
     }
 
     /*
@@ -106,11 +107,22 @@ contract EthereumStore is BlockStore {
         internal
         returns (bool)
     {
-        //verifyProof(_value, _parentNodes, _path, m_blockheaders[_blockHash].txRootHash);
+        //verifyProof(_value, _parentNodes, _path, getRootNodeHash(_parentNodes));
 
         emit VerifiedProof(_blockHash, uint(ProofType.TX));
         return true;
     }
+
+    // function stringToBytes32(string memory source) public returns (bytes32 result) {
+    //     bytes memory tempEmptyStringTest = bytes(source);
+    //     if (tempEmptyStringTest.length == 0) {
+    //         return 0x0;
+    //     }
+
+    //     assembly {
+    //         result := mload(add(source, 32))
+    //     }
+    // }
 
     /*
     * CheckReceiptProof
@@ -139,7 +151,7 @@ contract EthereumStore is BlockStore {
         internal
         returns (bool)
     {
-        //verifyProof(_value, _parentNodes, _path, m_blockheaders[_blockHash].receiptRootHash);
+        //verifyProof(_value, _parentNodes, _path, getRootNodeHash(_parentNodes));
 
         emit VerifiedProof(_blockHash, uint(ProofType.RECEIPT));
         return true;
@@ -195,9 +207,9 @@ contract EthereumStore is BlockStore {
 	* @returns          root hash
 	*/
     function getRootNodeHash(bytes memory _rlpNodes) private view returns (bytes32) {
-        RLP.RLPItem[] memory nodeList = _rlpNodes.toRLPItem().toList();
+        RLPReader.RLPItem[] memory nodeList = RLPReader.toRlpItem(_rlpNodes).toList();
 
-        bytes memory b_nodeRoot = RLP.toBytes(nodeList[0]);
+        bytes memory b_nodeRoot = RLPReader.toBytes(nodeList[0]);
 
         return keccak256(b_nodeRoot);
     }

@@ -156,6 +156,12 @@ const TRIG_CALLED_BY = "0x279884e133f9346f2fad9cc158222068221b613e";
 
 const TRIG_GENESIS_HASH = TESTBLOCK.parentHash;
 
+const TEST_BLOCKHASH2 = "0x9d2b9ef7cdf9f8d864f05ce78d3ac8c1f3115a8d6f308ba6848329bf6a4371ca";
+const TEST_PROOF2 = "0xf907bc00f8e52c8083419ce0944e71920b7330515faf5ea0c690f1ad06a85fb60c80b88465054e55000000000000000000000000f204a4ef082f5c04bb89f7d5e6568b796096735a0000000000000000000000002c2b9c9a4a25e24b174f26114e8926a9f2128fe40000000000000000000000004e71920b7330515faf5ea0c690f1ad06a85fb60c00000000000000000000000000000000000000000000000000000000000000011ba02fb727e2921bd3078a2109142eeac690665bae59cd37de2d94ce898e4155ff00a0775e90bd4c21337faf5d3881f75a0b85768c8721de8f144fcce79586042f4b4cf8eef8ec822080b8e7f8e52c8083419ce0944e71920b7330515faf5ea0c690f1ad06a85fb60c80b88465054e55000000000000000000000000f204a4ef082f5c04bb89f7d5e6568b796096735a0000000000000000000000002c2b9c9a4a25e24b174f26114e8926a9f2128fe40000000000000000000000004e71920b7330515faf5ea0c690f1ad06a85fb60c00000000000000000000000000000000000000000000000000000000000000011ba02fb727e2921bd3078a2109142eeac690665bae59cd37de2d94ce898e4155ff00a0775e90bd4c21337faf5d3881f75a0b85768c8721de8f144fcce79586042f4b4cf902e901830249bcb9010000000000000000000800000400000000000000000000000000000000000000000400000000200000000000000000040000000000002002000000000000044000000020000000000000000080000000000000000000040000000000000000000000000000000000800000000000000000000000004000000000000002000000000800000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002010000000000000000000040000000000000000000000000000000000000000000000000000000000000800000f901def8dd942a504b5e7ec284aca5b6f49716611237239f0b97f884a0b5806f8610464e96807c2b147620cc721c65309647f16cfccdf9fb7bd95152aca0000000000000000000000000f204a4ef082f5c04bb89f7d5e6568b796096735aa00000000000000000000000002c2b9c9a4a25e24b174f26114e8926a9f2128fe4a00000000000000000000000000000000000000000000000000000000000000001b8400000000000000000000000000000000000000000000000008a1580485b2326de00000000000000000000000000000000000000000000000000000000000026def8fd942a504b5e7ec284aca5b6f49716611237239f0b97f884a0a3ac9b53d029621ef95693b5f9b1d0b0da75029fe8530389271be02715e24c13a0000000000000000000000000f204a4ef082f5c04bb89f7d5e6568b796096735aa00000000000000000000000002c2b9c9a4a25e24b174f26114e8926a9f2128fe4a00000000000000000000000004e71920b7330515faf5ea0c690f1ad06a85fb60cb860000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000026de0000000000000000000000000000000000000000000000000000000000000000f902f5f902f2822080b902ecf902e901830249bcb9010000000000000000000800000400000000000000000000000000000000000000000400000000200000000000000000040000000000002002000000000000044000000020000000000000000080000000000000000000040000000000000000000000000000000000800000000000000000000000004000000000000002000000000800000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002010000000000000000000040000000000000000000000000000000000000000000000000000000000000800000f901def8dd942a504b5e7ec284aca5b6f49716611237239f0b97f884a0b5806f8610464e96807c2b147620cc721c65309647f16cfccdf9fb7bd95152aca0000000000000000000000000f204a4ef082f5c04bb89f7d5e6568b796096735aa00000000000000000000000002c2b9c9a4a25e24b174f26114e8926a9f2128fe4a00000000000000000000000000000000000000000000000000000000000000001b8400000000000000000000000000000000000000000000000008a1580485b2326de00000000000000000000000000000000000000000000000000000000000026def8fd942a504b5e7ec284aca5b6f49716611237239f0b97f884a0a3ac9b53d029621ef95693b5f9b1d0b0da75029fe8530389271be02715e24c13a0000000000000000000000000f204a4ef082f5c04bb89f7d5e6568b796096735aa00000000000000000000000002c2b9c9a4a25e24b174f26114e8926a9f2128fe4a00000000000000000000000004e71920b7330515faf5ea0c690f1ad06a85fb60cb860000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000026de0000000000000000000000000000000000000000000000000000000000000000";
+
+const TEST_BLOCKHASH = "0x6e13edb9c701353743106de578730b3191d344a05c2e40cfd747bedc912f12cc";
+const TEST_PROOF = "0xf907430af86806843b9aca00830186a094a2e4a61a3d2ce626ba9b3e927cffdb0e4e0bd06d8084457094cc1ca082c3adf1cb22c7260686fd56ea8dc66fbb95717f2e02e4c3702e329fbd57cdada0552e7f3ef6e9f932e08acc7cc15ea6a92d7c11b8ac4a4c0765ce446b3415915ff90236f851a0fb63b3ee11a1ae3b9eb765d44ff793bea3f4dcc1b3851d3d499abeb7858675a180808080808080a07768d7f0c5cf3656a1b885a44f42aa9ac25e728a0ffd42064387f806a9d4c26b8080808080808080f9017180a01766dce2b77f929553bdb672e197ac6bd7a6e1af3bd6631a4761a0f9303de264a011691ee69c053c698656fd0d1d9109fdff8f54c555892e9a7595d9e4b13cdc81a034825307fc63fa81e00dfdb9567cbe216930cc54152008fec1c1a3c0cead50eba03b07413394305087c802b1b33ba2f4adee8ef781e9c44faa0024cfcd8bec8818a04b39fd7ee87b2ca8d0445c7c14e83e281b45df8ee0717e47ddd1586be6aa27aaa06eae234d88c3b3f1dd0696681dde9e3369bdf03b6f56d04ec57c97e65b8e4ae1a0ade94ca299f8a1effdc75566e92fd728c79e856dbaf1a1536e7cf650eb952a4da0c963e18570b2c6c64c47cb4b4ee0bc66b2d7c709585a096abdc22c82665e67b4a0b976edf4c20ccb46e24370ce40d056fa4b30b37f052095cf8e6826ea520376eca024b45b59e4246a74e0a532a172ae6eda1ab7f9f7575389ebcb49f0b3730bc8e2a07e55916b539f96fff5cb000dd364526fb29f46895ca69c6bebb62f200447cec88080808080f86d20b86af86806843b9aca00830186a094a2e4a61a3d2ce626ba9b3e927cffdb0e4e0bd06d8084457094cc1ca082c3adf1cb22c7260686fd56ea8dc66fbb95717f2e02e4c3702e329fbd57cdada0552e7f3ef6e9f932e08acc7cc15ea6a92d7c11b8ac4a4c0765ce446b3415915ff901640183122a96b9010000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020080000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000f85af85894a2e4a61a3d2ce626ba9b3e927cffdb0e4e0bd06de1a027a9902e06885f7c187501d61990eae923b37634a8d6dda55a04dc7078395340a0000000000000000000000000b8844cf76df596e746f360957aa3af954ef51605f90335f851a08e337e40227c1f29eb9be66dcce5738b0ebd7e3fb8f22f3bde4c2c562c47a3e980808080808080a02285cf183e1144e639fd557c61b8f7c9a3c407ea44d900819c24e0bdd043e8c28080808080808080f9017180a072146023fa33354e1aea072971ed85a27934706b44aa09cf1caf7f3fce3f53c4a02843057917ddf23376e770bcadde52ebbddea15eff5cdee7ed48e3b1705105c6a005d7e4bee60ad1bb393c7747e4770c0967abe35d0fe711ed44653665e1ba77d6a004eca1f6f4ca52e78956f277aba13ee78c408d065c12d15094eb9bbcc4d8fc19a09bd8a88adc645ca6cfef48ab9342e0c08e001a5b06c8a075f87795e7d4397152a01bb09aa9e8d5d2c86672a3f2ba2ebb57d82cc02a871097fa144ff6686be301b1a0fad6ed01fdfa90d8568187f3aa23cdb09a512a0438d38dd6fb665e0ffdb78f31a0fa1dd46146f1740adf146d8560ad67d5d99b881d459c6e194abdbc333ef43393a0768dae614a1f5dc5d2d5a5618065c001e808d28bea10b1ae7e8ab1f3aab8bf4aa08bf7adbbd243a63deffa64afd7e90aab7b58311ef7b4c4a824e9fb611786444ca0a93de51ab6adb387212faa7880788c217d2d56cf5baf60c72ca9ec11947afdbf8080808080f9016b20b90167f901640183122a96b9010000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020080000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000f85af85894a2e4a61a3d2ce626ba9b3e927cffdb0e4e0bd06de1a027a9902e06885f7c187501d61990eae923b37634a8d6dda55a04dc7078395340a0000000000000000000000000b8844cf76df596e746f360957aa3af954ef51605";
+const TEST_TXHASH = "0xf75cccc643d1de5d953794999c2e87f5102b9eec9f5900d8c93f9b990ed7472c";
 
 contract('Ganache-Ethereum Integration', (accounts) => {
     let ion;
@@ -163,179 +169,189 @@ contract('Ganache-Ethereum Integration', (accounts) => {
     let storage;
 
     beforeEach('setup contract for each test', async function () {
-        ion = await Ion.new(DEPLOYEDCHAINID);
+        ion = await Ion.new();
         base = await Base.new(ion.address);
         storage = await EthereumStore.new(ion.address);
     })
 
-    describe('Register Base Module', () => {
-        it('Successful Register', async () => {
-            await base.register();
-        })
-
-        it('Fail Register Twice', async () => {
-            await base.register();
-            await base.register().should.be.rejected;
-        })
-    })
-
-    describe('Register Chain', () => {
-        it('Successful Register Chain', async () => {
-            await base.register();
-
-            let tx = await base.RegisterChain(TESTCHAINID, storage.address);
-            console.log("\tGas used to register chain = " + tx.receipt.gasUsed.toString() + " gas");
-            let chain = await storage.m_chains(TESTCHAINID);
+    describe('Check Proofs ', () => {
+        it('Successful Proof check', async () => {
             
-            assert(chain);
+            tx = await storage.CheckProofs(TEST_BLOCKHASH.toString('hex'), TEST_PROOF.toString('hex'));
+            console.log(tx);
         })
 
-        it('Fail Register Twice', async () => {
-            await base.register();
-
-            let tx = await base.RegisterChain(TESTCHAINID, storage.address);
-            console.log("\tGas used to register chain = " + tx.receipt.gasUsed.toString() + " gas");
-            let chain = await storage.m_chains(TESTCHAINID);
-
-            assert(chain);
-
-            await base.RegisterChain(TESTCHAINID, storage.address).should.be.rejected;
-        })
-
-        it('Fail Register Chain without registering base module', async () => {
-            let tx = await base.RegisterChain(TESTCHAINID, storage.address).should.be.rejected;
-        })
     })
 
-    describe('Add Block', () => {
-        it('Successful Add Block', async () => {
-            await base.register();
-            await base.RegisterChain(TESTCHAINID, storage.address);
 
-            // Fetch block 1 from ganache
-            const block = await web3.eth.getBlock(1);
+//     describe('Register Base Module', () => {
+//         it('Successful Register', async () => {
+//             await base.register();
+//         })
 
-            const rlpHeaders = encoder.encodeBlockHeader(block);
-            const headerHash = Web3Utils.sha3(rlpHeaders.unsigned);
-            assert.equal(block.hash, headerHash);
+//         it('Fail Register Twice', async () => {
+//             await base.register();
+//             await base.register().should.be.rejected;
+//         })
+//     })
 
-            let tx = await base.SubmitBlock(TESTCHAINID, rlpHeaders.unsigned, storage.address);
-            //let event = await tx.receipt.logs.some(l => { return l.topics[0] == '0x' + sha3("BlockAdded(bytes32,bytes32)") });
-            let txReceipt = await web3.eth.getTransactionReceipt(tx.tx);
+//     describe('Register Chain', () => {
+//         it('Successful Register Chain', async () => {
+//             await base.register();
+
+//             let tx = await base.RegisterChain(TESTCHAINID, storage.address);
+//             console.log("\tGas used to register chain = " + tx.receipt.gasUsed.toString() + " gas");
+//             let chain = await storage.m_chains(TESTCHAINID);
             
-            let eventEmitted = txReceipt.logs.some(l => { return l.topics[0] == '0x' + sha3("BlockAdded(bytes32,bytes32)")});
-            assert.ok(eventEmitted, "BlockAdded event not emitted");
-        })
+//             assert(chain);
+//         })
 
-        it('Fail Add Block with unregistered chain id', async () => {
-            await base.register();
-//          await base.RegisterChain(TESTCHAINID, VALIDATORS, GENESIS_HASH, storage.address);
+//         it('Fail Register Twice', async () => {
+//             await base.register();
 
-            // Fetch block 1 from ganache
-            const block = await web3.eth.getBlock(1);
+//             let tx = await base.RegisterChain(TESTCHAINID, storage.address);
+//             console.log("\tGas used to register chain = " + tx.receipt.gasUsed.toString() + " gas");
+//             let chain = await storage.m_chains(TESTCHAINID);
 
-            const rlpHeaders = encoder.encodeBlockHeader(block);
-            const headerHash = Web3Utils.sha3(rlpHeaders.unsigned);
-            assert.equal(block.hash, headerHash);
+//             assert(chain);
 
-            await base.SubmitBlock(TESTCHAINID, rlpHeaders.unsigned, storage.address).should.be.rejected;
-        })
+//             await base.RegisterChain(TESTCHAINID, storage.address).should.be.rejected;
+//         })
 
-        it('Fail Add Block from non-base', async () => {
-            // Fetch block 1 from ganache
-            const block = await web3.eth.getBlock(1);
+//         it('Fail Register Chain without registering base module', async () => {
+//             let tx = await base.RegisterChain(TESTCHAINID, storage.address).should.be.rejected;
+//         })
+//     })
 
-            const rlpHeaders = encoder.encodeBlockHeader(block);
-            const headerHash = Web3Utils.sha3(rlpHeaders.unsigned);
-            assert.equal(block.hash, headerHash);
+//     describe('Add Block', () => {
+//         it('Successful Add Block', async () => {
+//             await base.register();
+//             await base.RegisterChain(TESTCHAINID, storage.address);
 
-            // Fail direct adding of block to storage
-            await storage.addBlock(TESTCHAINID, rlpHeaders.unsigned).should.be.rejected;
-        })
-    })
+//             // Fetch block 1 from ganache
+//             const block = await web3.eth.getBlock(1);
 
-    describe('Proof Decoding', () => {
-        it('Successful Proof Decoding', async () => {
-            compressedProof = generateProof();
-            CLIGeneratedProof = "0xf9074113f86707843b9aca008257c39461621bcf02914668f8404c1f860e92fc1893f74c8084457094cc1ba07e2ebe15f4ece2fd8ffc9a49d7e9e4e71a30534023ca6b24ab4000567709ad53a013a61e910eb7145aa93e865664c54846f26e09a74bd577eaf66b5dd00d334288f90235f871a0804f9c841a6a1d3361d79980581c84e5b4d3e4c9bf33951346775542d0ee0728a0edadb5e660118ea4323654191131b62c81fc00203a15a21c925f9f50d0e4b3e4808080808080a03eda2d64b94c5ed45026a29c75c99677d44c561ea5efea30c1db6299871d5c2e8080808080808080f90151a0bc285699e68d2fe18e7af2cdf7e7e6456e91a3fd31e3c9935bc5bef92e94bf4ba06eb963b2c3a3b6c07a7221aa6f6f86f7cb8ddb45ab1ff1a9dc781f34da1f081fa0deea5b5566e7a5634d91c5fb56e25f4370e3531e2fd71ee17ed6c4ad0be2ced3a0b4e9d14555f162e811cfbcbff9b98a271a197b75271565f693912c2ff75e2131a03b0bc2d764fbefd76848ee2da7b211eb230ede08d8c54e6a868be9f5e42122c1a0b6dd488ad4fb82b0a98dff81ac6766d1dec26b29dc06174de1d315b0ab0bdf0ca066c20ff06dc33777f53eec32b0b9a8d99872bec24bb3998bb520ae6897c21d7ea02db2a399f611ba7993efb4768938a6f61b4add8959ce4c89f201f41e882ff375a02e31051a9f938b9b342b8070db3dd829f62da8d0c83a6dff91a4e3b4cb2adb9ea090e75708e7dbf856b75ed126a960085419fcde0e6a0129a92dffc0cb83ac089680808080808080f86c20b869f86707843b9aca008257c39461621bcf02914668f8404c1f860e92fc1893f74c8084457094cc1ba07e2ebe15f4ece2fd8ffc9a49d7e9e4e71a30534023ca6b24ab4000567709ad53a013a61e910eb7145aa93e865664c54846f26e09a74bd577eaf66b5dd00d334288f901640183252867b9010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000010000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000f85af8589461621bcf02914668f8404c1f860e92fc1893f74ce1a027a9902e06885f7c187501d61990eae923b37634a8d6dda55a04dc7078395340a0000000000000000000000000279884e133f9346f2fad9cc158222068221b613ef90335f871a012d378fe6800bc18f22e715a31971ef7e73ac5d1d85384f4b66ac32036ae43dea004d6e2678656a957ac776dbef512a04d266c1af3e2c5587fd233261a3d423213808080808080a05fac317a4d6d78181319fbc7e2cae4a9260f1a6afb5c6fea066e2308eed416818080808080808080f90151a03da235c6dd0fbdaf208c60cbdca0d609dee2ba107495aa7adaa658362616c8aaa09ebf378a9064aa4da0512c55c790a5e007ac79d2713e4533771cd2c95be47a4da0c06fed36ffe1f2ec164ba88f73b353960448d2decbb65355c5298a33555de742a0e057afe423ee17e5499c570a56880b0f5b5c1884b90ff9b9b5baa827f72fc816a093e06093cd2fdb67e0f87cfcc35ded2f445cc1309a0ff178e59f932aeadb6d73a0193e4e939fbc5d34a570bea3fff7c6d54adcb1c3ab7ef07510e7bd5fcef2d4b3a0a17a0c71c0118092367220f65b67f2ba2eb9068ff5270baeabe8184a01a37f14a03479a38e63123d497588ad5c31d781276ec8c11352dd3895c8add34f9a2b786ba042254728bb9ab94b58adeb75d2238da6f30382969c00c65e55d4cc4aa474c0a6a03c088484aa1c73b8fb291354f80e9557ab75a01c65d046c2471d19bd7f2543d880808080808080f9016b20b90167f901640183252867b9010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000010000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000f85af8589461621bcf02914668f8404c1f860e92fc1893f74ce1a027a9902e06885f7c187501d61990eae923b37634a8d6dda55a04dc7078395340a0000000000000000000000000279884e133f9346f2fad9cc158222068221b613e"
-            assert.equal("0x" + compressedProof.toString('hex'), CLIGeneratedProof);
-        })
-    })
+//             const rlpHeaders = encoder.encodeBlockHeader(block);
+//             const headerHash = Web3Utils.sha3(rlpHeaders.unsigned);
+//             assert.equal(block.hash, headerHash);
 
-    // describe('Check All Proofs of Tx 0xafc3ab60059ed38e71c7f6bea036822abe16b2c02fcf770a4f4b5fffcbfe6e7e on Rinkeby', () => {
-    //     it('Successful Check Proofs', async () => {
-    //         await base.register();
-    //         await base.RegisterChain(TESTCHAINID, VALIDATORS_B2657422, TRIG_GENESIS_HASH, storage.address);
+//             let tx = await base.SubmitBlock(TESTCHAINID, rlpHeaders.unsigned, storage.address);
+//             //let event = await tx.receipt.logs.some(l => { return l.topics[0] == '0x' + sha3("BlockAdded(bytes32,bytes32)") });
+//             let txReceipt = await web3.eth.getTransactionReceipt(tx.tx);
+            
+//             let eventEmitted = txReceipt.logs.some(l => { return l.topics[0] == '0x' + sha3("BlockAdded(bytes32,bytes32)")});
+//             assert.ok(eventEmitted, "BlockAdded event not emitted");
+//         })
 
-    //         // Fetch block 2657422 from rinkeby
-    //         const block = await web3.eth.getBlock(TESTBLOCK.number);
+//         it('Fail Add Block with unregistered chain id', async () => {
+//             await base.register();
+// //          await base.RegisterChain(TESTCHAINID, VALIDATORS, GENESIS_HASH, storage.address);
 
-    //         const rlpHeaders = encoder.encodeBlockHeader(block);
-    //         const signedHeaderHash = Web3Utils.sha3(rlpHeaders.signed);
-    //         assert.equal(block.hash, signedHeaderHash);
+//             // Fetch block 1 from ganache
+//             const block = await web3.eth.getBlock(1);
 
-    //         let tx = await clique.SubmitBlock(TESTCHAINID, rlpHeaders.unsigned, storage.address);
-    //         let event = tx.receipt.logs.some(l => { return l.topics[0] == '0x' + sha3("BlockAdded(bytes32,bytes32)") });
-    //         assert.ok(event, "BlockAdded event not emitted");
+//             const rlpHeaders = encoder.encodeBlockHeader(block);
+//             const headerHash = Web3Utils.sha3(rlpHeaders.unsigned);
+//             assert.equal(block.hash, headerHash);
 
-    //         let submittedEvent = tx.logs.find(l => { return l.event == 'BlockSubmitted' });
-    //         let blockHash = submittedEvent.args.blockHash;
-    //         assert.equal(signedHeaderHash, blockHash);
+//             await base.SubmitBlock(TESTCHAINID, rlpHeaders.unsigned, storage.address).should.be.rejected;
+//         })
 
-    //         compressedProof = generateProof();
+//         it('Fail Add Block from non-base', async () => {
+//             // Fetch block 1 from ganache
+//             const block = await web3.eth.getBlock(1);
 
-    //         tx = await storage.CheckProofs(TESTCHAINID, TESTBLOCK.hash, "0x" + compressedProof.toString('hex'));
-    //         console.log("\tGas used to submit check proofs = " + tx.receipt.gasUsed.toString() + " gas");
-    //     })
+//             const rlpHeaders = encoder.encodeBlockHeader(block);
+//             const headerHash = Web3Utils.sha3(rlpHeaders.unsigned);
+//             assert.equal(block.hash, headerHash);
 
-    //     it('Fail Proofs with wrong proofs value', async () => {
-    //         await clique.register();
-    //         await clique.RegisterChain(TESTCHAINID, VALIDATORS_B2657422, TRIG_GENESIS_HASH, storage.address);
+//             // Fail direct adding of block to storage
+//             await storage.addBlock(TESTCHAINID, rlpHeaders.unsigned).should.be.rejected;
+//         })
+//     })
 
-    //         // Fetch block 2657422 from rinkeby
-    //         const block = await rinkeby.eth.getBlock(TESTBLOCK.number);
+//     describe('Proof Decoding', () => {
+//         it('Successful Proof Decoding', async () => {
+//             compressedProof = generateProof();
+//             CLIGeneratedProof = "0xf9074113f86707843b9aca008257c39461621bcf02914668f8404c1f860e92fc1893f74c8084457094cc1ba07e2ebe15f4ece2fd8ffc9a49d7e9e4e71a30534023ca6b24ab4000567709ad53a013a61e910eb7145aa93e865664c54846f26e09a74bd577eaf66b5dd00d334288f90235f871a0804f9c841a6a1d3361d79980581c84e5b4d3e4c9bf33951346775542d0ee0728a0edadb5e660118ea4323654191131b62c81fc00203a15a21c925f9f50d0e4b3e4808080808080a03eda2d64b94c5ed45026a29c75c99677d44c561ea5efea30c1db6299871d5c2e8080808080808080f90151a0bc285699e68d2fe18e7af2cdf7e7e6456e91a3fd31e3c9935bc5bef92e94bf4ba06eb963b2c3a3b6c07a7221aa6f6f86f7cb8ddb45ab1ff1a9dc781f34da1f081fa0deea5b5566e7a5634d91c5fb56e25f4370e3531e2fd71ee17ed6c4ad0be2ced3a0b4e9d14555f162e811cfbcbff9b98a271a197b75271565f693912c2ff75e2131a03b0bc2d764fbefd76848ee2da7b211eb230ede08d8c54e6a868be9f5e42122c1a0b6dd488ad4fb82b0a98dff81ac6766d1dec26b29dc06174de1d315b0ab0bdf0ca066c20ff06dc33777f53eec32b0b9a8d99872bec24bb3998bb520ae6897c21d7ea02db2a399f611ba7993efb4768938a6f61b4add8959ce4c89f201f41e882ff375a02e31051a9f938b9b342b8070db3dd829f62da8d0c83a6dff91a4e3b4cb2adb9ea090e75708e7dbf856b75ed126a960085419fcde0e6a0129a92dffc0cb83ac089680808080808080f86c20b869f86707843b9aca008257c39461621bcf02914668f8404c1f860e92fc1893f74c8084457094cc1ba07e2ebe15f4ece2fd8ffc9a49d7e9e4e71a30534023ca6b24ab4000567709ad53a013a61e910eb7145aa93e865664c54846f26e09a74bd577eaf66b5dd00d334288f901640183252867b9010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000010000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000f85af8589461621bcf02914668f8404c1f860e92fc1893f74ce1a027a9902e06885f7c187501d61990eae923b37634a8d6dda55a04dc7078395340a0000000000000000000000000279884e133f9346f2fad9cc158222068221b613ef90335f871a012d378fe6800bc18f22e715a31971ef7e73ac5d1d85384f4b66ac32036ae43dea004d6e2678656a957ac776dbef512a04d266c1af3e2c5587fd233261a3d423213808080808080a05fac317a4d6d78181319fbc7e2cae4a9260f1a6afb5c6fea066e2308eed416818080808080808080f90151a03da235c6dd0fbdaf208c60cbdca0d609dee2ba107495aa7adaa658362616c8aaa09ebf378a9064aa4da0512c55c790a5e007ac79d2713e4533771cd2c95be47a4da0c06fed36ffe1f2ec164ba88f73b353960448d2decbb65355c5298a33555de742a0e057afe423ee17e5499c570a56880b0f5b5c1884b90ff9b9b5baa827f72fc816a093e06093cd2fdb67e0f87cfcc35ded2f445cc1309a0ff178e59f932aeadb6d73a0193e4e939fbc5d34a570bea3fff7c6d54adcb1c3ab7ef07510e7bd5fcef2d4b3a0a17a0c71c0118092367220f65b67f2ba2eb9068ff5270baeabe8184a01a37f14a03479a38e63123d497588ad5c31d781276ec8c11352dd3895c8add34f9a2b786ba042254728bb9ab94b58adeb75d2238da6f30382969c00c65e55d4cc4aa474c0a6a03c088484aa1c73b8fb291354f80e9557ab75a01c65d046c2471d19bd7f2543d880808080808080f9016b20b90167f901640183252867b9010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000010000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000f85af8589461621bcf02914668f8404c1f860e92fc1893f74ce1a027a9902e06885f7c187501d61990eae923b37634a8d6dda55a04dc7078395340a0000000000000000000000000279884e133f9346f2fad9cc158222068221b613e"
+//             assert.equal("0x" + compressedProof.toString('hex'), CLIGeneratedProof);
+//         })
+//     })
 
-    //         const rlpHeaders = encoder.encodeBlockHeader(block);
-    //         const signedHeaderHash = Web3Utils.sha3(rlpHeaders.signed);
-    //         assert.equal(block.hash, signedHeaderHash);
+//     describe('Check All Proofs of Tx 0xafc3ab60059ed38e71c7f6bea036822abe16b2c02fcf770a4f4b5fffcbfe6e7e on Rinkeby', () => {
+//         it('Successful Check Proofs', async () => {
+//             await base.register();
+//             await base.RegisterChain(TESTCHAINID, VALIDATORS_B2657422, TRIG_GENESIS_HASH, storage.address);
 
-    //         let tx = await clique.SubmitBlock(TESTCHAINID, rlpHeaders.unsigned, storage.address);
-    //         let event = tx.receipt.logs.some(l => { return l.topics[0] == '0x' + sha3("BlockAdded(bytes32,bytes32)") });
-    //         assert.ok(event, "BlockAdded event not emitted");
+//             // Fetch block 2657422 from rinkeby
+//             const block = await web3.eth.getBlock(TESTBLOCK.number);
 
-    //         let submittedEvent = tx.logs.find(l => { return l.event == 'BlockSubmitted' });
-    //         let blockHash = submittedEvent.args.blockHash;
-    //         assert.equal(signedHeaderHash, blockHash);
+//             const rlpHeaders = encoder.encodeBlockHeader(block);
+//             const signedHeaderHash = Web3Utils.sha3(rlpHeaders.signed);
+//             assert.equal(block.hash, signedHeaderHash);
 
-    //         compressedProof = generateCorruptedProof();
+//             let tx = await clique.SubmitBlock(TESTCHAINID, rlpHeaders.unsigned, storage.address);
+//             let event = tx.receipt.logs.some(l => { return l.topics[0] == '0x' + sha3("BlockAdded(bytes32,bytes32)") });
+//             assert.ok(event, "BlockAdded event not emitted");
 
-    //         await storage.CheckProofs(TESTCHAINID, TESTBLOCK.hash, "0x" + compressedProof.toString('hex')).should.be.rejected;
-    //     })
+//             let submittedEvent = tx.logs.find(l => { return l.event == 'BlockSubmitted' });
+//             let blockHash = submittedEvent.args.blockHash;
+//             assert.equal(signedHeaderHash, blockHash);
 
-    //     it('Fail Proofs with malformed proof', async () => {
-    //         await clique.register();
-    //         await clique.RegisterChain(TESTCHAINID, VALIDATORS_B2657422, TRIG_GENESIS_HASH, storage.address);
+//             compressedProof = generateProof();
 
-    //         // Fetch block 2657422 from rinkeby
-    //         const block = await rinkeby.eth.getBlock(TESTBLOCK.number);
+//             tx = await storage.CheckProofs(TESTCHAINID, TESTBLOCK.hash, "0x" + compressedProof.toString('hex'));
+//             console.log("\tGas used to submit check proofs = " + tx.receipt.gasUsed.toString() + " gas");
+//         })
 
-    //         const rlpHeaders = encoder.encodeBlockHeader(block);
-    //         const signedHeaderHash = Web3Utils.sha3(rlpHeaders.signed);
-    //         assert.equal(block.hash, signedHeaderHash);
+//         it('Fail Proofs with wrong proofs value', async () => {
+//             await clique.register();
+//             await clique.RegisterChain(TESTCHAINID, VALIDATORS_B2657422, TRIG_GENESIS_HASH, storage.address);
 
-    //         let tx = await clique.SubmitBlock(TESTCHAINID, rlpHeaders.unsigned, storage.address);
-    //         let event = tx.receipt.logs.some(l => { return l.topics[0] == '0x' + sha3("BlockAdded(bytes32,bytes32)") });
-    //         assert.ok(event, "BlockAdded event not emitted");
+//             // Fetch block 2657422 from rinkeby
+//             const block = await rinkeby.eth.getBlock(TESTBLOCK.number);
 
-    //         let submittedEvent = tx.logs.find(l => { return l.event == 'BlockSubmitted' });
-    //         let blockHash = submittedEvent.args.blockHash;
-    //         assert.equal(signedHeaderHash, blockHash);
+//             const rlpHeaders = encoder.encodeBlockHeader(block);
+//             const signedHeaderHash = Web3Utils.sha3(rlpHeaders.signed);
+//             assert.equal(block.hash, signedHeaderHash);
 
-    //         compressedProof = generateMalformedProof();
+//             let tx = await clique.SubmitBlock(TESTCHAINID, rlpHeaders.unsigned, storage.address);
+//             let event = tx.receipt.logs.some(l => { return l.topics[0] == '0x' + sha3("BlockAdded(bytes32,bytes32)") });
+//             assert.ok(event, "BlockAdded event not emitted");
 
-    //         await storage.CheckProofs(TESTCHAINID, TESTBLOCK.hash, "0x" + compressedProof.toString('hex')).should.be.rejected;
-    //     })
-    // })
+//             let submittedEvent = tx.logs.find(l => { return l.event == 'BlockSubmitted' });
+//             let blockHash = submittedEvent.args.blockHash;
+//             assert.equal(signedHeaderHash, blockHash);
+
+//             compressedProof = generateCorruptedProof();
+
+//             await storage.CheckProofs(TESTCHAINID, TESTBLOCK.hash, "0x" + compressedProof.toString('hex')).should.be.rejected;
+//         })
+
+//         it('Fail Proofs with malformed proof', async () => {
+//             await clique.register();
+//             await clique.RegisterChain(TESTCHAINID, VALIDATORS_B2657422, TRIG_GENESIS_HASH, storage.address);
+
+//             // Fetch block 2657422 from rinkeby
+//             const block = await rinkeby.eth.getBlock(TESTBLOCK.number);
+
+//             const rlpHeaders = encoder.encodeBlockHeader(block);
+//             const signedHeaderHash = Web3Utils.sha3(rlpHeaders.signed);
+//             assert.equal(block.hash, signedHeaderHash);
+
+//             let tx = await clique.SubmitBlock(TESTCHAINID, rlpHeaders.unsigned, storage.address);
+//             let event = tx.receipt.logs.some(l => { return l.topics[0] == '0x' + sha3("BlockAdded(bytes32,bytes32)") });
+//             assert.ok(event, "BlockAdded event not emitted");
+
+//             let submittedEvent = tx.logs.find(l => { return l.event == 'BlockSubmitted' });
+//             let blockHash = submittedEvent.args.blockHash;
+//             assert.equal(signedHeaderHash, blockHash);
+
+//             compressedProof = generateMalformedProof();
+
+//             await storage.CheckProofs(TESTCHAINID, TESTBLOCK.hash, "0x" + compressedProof.toString('hex')).should.be.rejected;
+//         })
+//     })
 
 //     describe('Event Consumption Contract', () => {
 //         it('Deploy Function Contract', async () => {
@@ -414,7 +430,7 @@ contract('Ganache-Ethereum Integration', (accounts) => {
 //             // Fail with wrong expected event parameter
 //             await functionContract.verifyAndExecute(TESTCHAINID, TESTBLOCK.hash, TRIG_DEPLOYED_RINKEBY_ADDR, "0x" + compressedProof.toString('hex'), TRIG_DEPLOYED_RINKEBY_ADDR).should.be.rejected;
 //         })
-//     })
+    })
 
 
 // The below succeeds but manual registering with the same values fail
@@ -441,7 +457,7 @@ contract('Ganache-Ethereum Integration', (accounts) => {
 //    // Fail adding id of chain already initialised
 //    await clique.RegisterChain(testid, testval, testgen, teststore).should.be.rejected;
 //  })
-})
+//})
 
 async function verifyReceipts(eP, txHash) {
     await eP.getReceiptTrieRoot(txHash).then( (root) => {
