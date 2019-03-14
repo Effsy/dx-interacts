@@ -1,21 +1,31 @@
 const Ion = artifacts.require("Ion");
 const Base = artifacts.require("Base");
 const EthereumStore = artifacts.require("EthereumStore");
-const EventFunction = artifacts.require("Function");
-const DepositEventVerifier = artifacts.require("DepositEventVerifier");
+const DxiClaimAuction = artifacts.require("DxiClaimAuction");
+const DxAuctionClearedEventVerifier = artifacts.require("DxAuctionClearedEventVerifier");
+const DxiTriggerPostSellOrder = artifacts.require("DxiTriggerPostSellOrder");
+const EventEmitterVerifier = artifacts.require("EventEmitterVerifier");
+const DxInteracts = artifacts.require("DxInteracts");
+const EventEmitter = artifacts.require("EventEmitter");
 
 module.exports = async (deployer) => {
   try {
-      deployer.deploy(Ion, "0x6341fd3daf94b748c72ced5a5b26028f2474f5f00d824504e4fa37a75767e177")
+      deployer.deploy(Ion)
       .then(() => Ion.deployed)
       .then(() => deployer.deploy(EthereumStore, Ion.address))
       .then(() => EthereumStore.deployed)
       .then(() => deployer.deploy(Base, Ion.address))
       .then(() => Base.deployed)
-      .then(() => deployer.deploy(DepositEventVerifier))
-      .then(() => DepositEventVerifier.deployed)
-      .then(() => deployer.deploy(EventFunction, Ion.address, DepositEventVerifier.address))
-      .then(() => EventFunction.deployed)
+      .then(() => deployer.deploy(DxAuctionClearedEventVerifier))
+      .then(() => DxAuctionClearedEventVerifier.deployed)
+      .then(() => deployer.deploy(DxiClaimAuction, EthereumStore.address, DxAuctionClearedEventVerifier.address, DxInteracts.address))
+      .then(() => DxiClaimAuction.deployed)
+      .then(() => deployer.deploy(EventEmitter))
+      .then(() => EventEmitter.deployed)
+      .then(() => deployer.deploy(EventEmitterVerifier))
+      .then(() => EventEmitterVerifier.deployed)
+      .then(() => deployer.deploy(DxiTriggerPostSellOrder, EthereumStore.address, EventEmitterVerifier.address, DxInteracts.address))
+      .then(() => DxiTriggerPostSellOrder.deployed)
 
       console.log('Ion contracts deployed');
   } catch(err) {

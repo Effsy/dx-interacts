@@ -3,8 +3,9 @@
 pragma solidity ^0.5.2;
 
 import "./storage/EthereumStore.sol";
+import "../DxInteracts.sol";
 
-contract DepositEventVerifier {
+contract DxAuctionClearedEventVerifier {
     function verify(bytes20 _contractEmittedAddress, bytes memory _rlpReceipt, bytes20 _expectedAddress) public returns (bool);
 }
 
@@ -23,26 +24,16 @@ contract DepositEventVerifier {
     This would also bloat the local scope which is prone to 'stack too deep' issues which would require custom
     workarounds.
 */
-contract Function {
+contract DxiClaimAuction {
     EthereumStore blockStore;
+    DxInteracts public dxInteracts;
 
-    /*  The event verifier for the specific event being consumed. Each event would require a different event verifier to
-        be deployed and each consumer would reference the relevant verifier to prove logs. */
-    DepositEventVerifier verifier;
+    DxAuctionClearedEventVerifier verifier;
 
-    /* Custom event that fires when execution is performed successfully. */
-    event Executed();
-
-    /*  Constructor. Requires Ion contract address and all used event verifier contract addresses. In this case we only
-        use one verifier. */
-    constructor(address _storeAddr, address _verifierAddr) public {
+    constructor(address _storeAddr, address _verifierAddr, address _dxInteractsAddr) public {
         blockStore = EthereumStore(_storeAddr);
-        verifier = DepositEventVerifier(_verifierAddr);
-    }
-
-    /* This is the function that is intended to be executed upon successful verification of proofs */
-    function execute() internal {
-        emit Executed();
+        dxInteracts = DxInteracts(_dxInteractsAddr);
+        verifier = DxAuctionClearedEventVerifier(_verifierAddr);
     }
 
     /*  
@@ -74,16 +65,20 @@ contract Function {
         verified execution. In our case, it is simple as we only consume a single event.
         */
     function verifyAndExecute(
-        bytes32 _chainId,
         bytes32 _blockHash,
-        bytes20 _contractEmittedAddress,
         bytes memory _proof,
-        bytes20 _expectedAddress
+        address sellToken,
+        address buyToken,
+        address user,
+        uint auctionIndex,
+        uint amount
+        //bytes20 _contractEmittedAddress,
+        //bytes20 _expectedAddress
     ) public {
-        //bytes memory receipt = blockStore.CheckProofs(_blockHash, _proof);
+        bytes memory receipt = blockStore.CheckProofs(_blockHash, _proof);
 
         //require(verifier.verify(_contractEmittedAddress, receipt, _expectedAddress), "Event verification failed.");
-        execute();
+        //dxInteracts.claimAuction(sellToken, buyToken, user, auctionIndex, amount);
     }
 }
 

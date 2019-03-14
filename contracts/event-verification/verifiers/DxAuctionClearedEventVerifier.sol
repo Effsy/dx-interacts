@@ -7,7 +7,7 @@ import "../libraries/SolidityUtils.sol";
 import "./EventVerifier.sol";
 
 /*
-    DepositEventVerifier
+    DxAuctionClearedEventVerifier
 
     Inherits from `EventVerifier` and verifies `Deposit` events.
 
@@ -18,8 +18,8 @@ import "./EventVerifier.sol";
     supplied events with similarly supplied expected outcomes. It is only meant to serve as a utility to perform defined
     checks against specific events.
 */
-contract DepositEventVerifier is EventVerifier {
-    bytes32 eventSignature = keccak256("Deposit(address,uint)");
+contract DxAuctionClearedEventVerifier is EventVerifier {
+    bytes32 eventSignature = keccak256("AuctionCleared(sellToken,buyToken,sellVolume,buyVolume,auctionIndex)");
 
     function verify(bytes20 _contractEmittedAddress, bytes memory _rlpReceipt, bytes20 _expectedAddress) public view returns (bool) {
         // Retrieve specific log for given event signature
