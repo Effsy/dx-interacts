@@ -13,3 +13,8 @@
 
 ## Run our tests
 `> yarn dxi-test`
+
+#### Warning
+
+Right now anyone can claim tokens from the dxi contracts. 
+Dev branch will soon have functionality covering this.
