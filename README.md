@@ -1,4 +1,4 @@
-# dxInteracts
+# DxInteracts
 
 ## Setup Instructions
 
