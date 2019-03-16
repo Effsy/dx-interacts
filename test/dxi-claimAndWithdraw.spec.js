@@ -2,18 +2,22 @@
 /* eslint no-undef: "error" */
 
 // const {
-//   eventWatcher,
-//   log: utilsLog,
-//   assertRejects,
-//   timestamp,
-//   gasLogger
-// } = require('./utils')
-
-// const { getContracts, setupTest, wait } = require('./testFunctions')
+  //   eventWatcher,
+  //   log: utilsLog,
+  //   assertRejects,
+  //   timestamp,
+  //   gasLogger
+  // } = require('./utils')
+  
+  // const { getContracts, setupTest, wait } = require('./testFunctions')
+web3.providers.HttpProvider.prototype.sendAsync = web3.providers.HttpProvider.prototype.send;
+  
 const BigNumber = require('bignumber.js');
 var chai = require('chai');
 chai.use(require('chai-bignumber')(BigNumber));
-
+// const { waitUntilBlock } = require('@digix/tempo')(web3)
+const { wait } = require('@digix/tempo')(web3)
+// console.log(wait);
 
 // Test VARS
 let eth
@@ -39,6 +43,8 @@ const DxInteracts = artifacts.require("DxInteracts")
 
 contract('DxInteracts - claim and withdrawal', accounts => {
   // const [, seller1] = accounts
+  const [, seller1, seller2, buyer1, buyer2] = accounts
+
   
   
   before(async () => {
@@ -52,10 +58,6 @@ contract('DxInteracts - claim and withdrawal', accounts => {
       
       await addTokenPair();
     })
-    
-  beforeEach(async () => {
-      await postSellOrder();
-  })
     
   const getTokenBalance = async (account, token) => (await dx.balances.call(token.address || token, account))
 
@@ -172,7 +174,10 @@ contract('DxInteracts - claim and withdrawal', accounts => {
     )
   }  
 
-  const postSellOrder = async () => {
+  const postSellOrderWithDxi = async () => {
+
+    
+
     const latestAuctionIndex = await getAuctionIndex(eth, gno)
 
     chai.expect(latestAuctionIndex.toString()).to.be.bignumber.equal(1);
@@ -205,7 +210,158 @@ contract('DxInteracts - claim and withdrawal', accounts => {
     assertChangedAmounts(oldAmounts, newAmounts, amount, amountAfterFee, postedToCurrentAuction)
   }
 
+    /**
+   * postSellOrder
+   * @param {address} ST      => Sell Token
+   * @param {address} BT      => Buy Token
+   * @param {uint}    aucIdx  => auctionIndex
+   * @param {uint}    amt     => amount
+   *
+   * @returns { tx receipt }
+   */
+  const postSellOrder = async (ST, BT, aucIdx, amt, acct) => {
+    ST = ST || eth; BT = BT || gno
+    let auctionIdx = aucIdx || 0
+
+    const buyVolumes = (await dx.buyVolumes.call(ST.address, BT.address))
+    const sellVolumes = (await dx.sellVolumesCurrent.call(ST.address, BT.address))
+    console.log(`
+      Current Buy Volume BEFORE Posting => ${buyVolumes}
+      Current Sell Volume               => ${sellVolumes}
+      ----
+      Posting Sell Amt -------------------> ${amt} in ${await ST.symbol()} for ${await BT.symbol()} in auction ${auctionIdx}
+    `)
+    
+    // log('POSTBUYORDER TX RECEIPT ==', await dx.postBuyOrder(ST.address, BT.address, auctionIdx, amt, { from: acct }))
+    // console.log({ st: ST.address, bt: BT.address, auctionIdx, amt, from: acct })
+    return dx.postSellOrder(ST.address, BT.address, auctionIdx, amt, { from: acct })
+  }
+
+    /**
+   * waitUntilPriceIsXPercentOfPreviousPrice
+   * @param {address} ST  => Sell Token
+   * @param {address} BT  => Buy Token
+   * @param {unit}    p   => percentage of the previous price
+   */
+  const waitUntilPriceIsXPercentOfPreviousPrice = async (ST, BT, p) => {
+    const [getAuctionIndex, getAuctionStart] = await Promise.all([
+      dx.getAuctionIndex.call(ST.address, BT.address),
+      dx.getAuctionStart.call(ST.address, BT.address)
+    ])
+
+    const currentIndex = getAuctionIndex
+    const startingTimeOfAuction = getAuctionStart
+    let priceBefore = 1
+
+    
+    let result = (await dx.getCurrentAuctionPrice.call(ST.address, BT.address, currentIndex))
+    let num = result[0]
+    let den = result[1]
+    // console.log(await dx.getCurrentAuctionPrice.call(ST.address, BT.address, currentIndex))
+    priceBefore = num.div(den)
+    
+    console.log(`
+    Price BEFORE waiting until Price = initial Closing Price (2) * 2
+    ==============================
+    Price.num             = ${num}
+    Price.den             = ${den}
+    Price at this moment  = ${(priceBefore)}
+    ==============================
+    `)
+    
+    
+    const timeToWaitFor = Math.ceil((86400 - p * 43200) / (1 + p)) + startingTimeOfAuction
+    // wait until the price is good
+    await wait(startingTimeOfAuction - timestamp())
+    
+    
+    (result = (await dx.getCurrentAuctionPrice.call(ST.address, BT.address, currentIndex)))
+    num = result[0]
+    den = result[1]
+    const priceAfter = num.div(den)
+    console.log(`
+      Price AFTER waiting until Price = ${p * 100}% of ${priceBefore / 2} (initial Closing Price)
+      ==============================
+      Price.num             = ${num}
+      Price.den             = ${den}
+      Price at this moment  = ${(priceAfter)}
+      ==============================
+    `)
+    
+    assert.equal(timestamp() >= timeToWaitFor, true)
+    // assert.isAtLeast(priceAfter, (priceBefore / 2) * p)
+
+    return timeToWaitFor
+  }
+
+  const getClearingTime = async (sellToken, buyToken, auctionIndex) => {
+    return (await dx.getClearingTime.call(sellToken.address ||
+      sellToken, buyToken.address ||
+      buyToken, auctionIndex))
+  }
+  
+    /**
+   * postBuyOrder
+   * @param {address} ST      => Sell Token
+   * @param {address} BT      => Buy Token
+   * @param {uint}    aucIdx  => auctionIndex
+   * @param {uint}    amt     => amount
+   *
+   * @returns { tx receipt }
+   */
+  const postBuyOrder = async (ST, BT, aucIdx, amt, acct) => {
+    ST = ST || eth; BT = BT || gno
+    let auctionIdx = aucIdx || await getAuctionIndex(ST, BT)
+
+    console.log(`
+    Current Auction Index -> ${auctionIdx}
+    `)
+    const buyVolumes = (await dx.buyVolumes.call(ST.address, BT.address))
+    const sellVolumes = (await dx.sellVolumesCurrent.call(ST.address, BT.address))
+    console.log(`
+      Current Buy Volume BEFORE Posting => ${buyVolumes}
+      Current Sell Volume               => ${sellVolumes}
+      ----
+      Posting Buy Amt -------------------> ${amt} in GNO for ETH
+    `)
+
+    // log('POSTBUYORDER TX RECEIPT ==', await dx.postBuyOrder(ST.address, BT.address, auctionIdx, amt, { from: acct }))
+    return dx.postBuyOrder(ST.address, BT.address, auctionIdx, amt, { from: acct })
+  }
+
+
   it('user can claim his tokens when auction is closed', async () => {
+    await postSellOrderWithDxi();
     // TODO: test claiming functionality
+    // prepare test by starting and clearing new auction
+    let auctionIndex = await getAuctionIndex(eth, gno)
+    await Promise.all([
+      postSellOrder(gno, eth, 0, BigNumber(10e18), seller2),
+      postSellOrder(eth, gno, 0, BigNumber(10e18), seller2)
+    ])
+    await waitUntilPriceIsXPercentOfPreviousPrice(eth, gno, 1)
+    await postBuyOrder(eth, gno, auctionIndex, 2 * BigNumber(10e18), buyer1)
+
+    // check that clearingTime was saved
+    const clearingTime = await getClearingTime(gno, eth, auctionIndex)
+    const now = timestamp()
+    assert.equal(clearingTime, now, 'clearingTime was set')
+
+    auctionIndex = await getAuctionIndex()
+    await setAndCheckAuctionStarted(eth, gno)
+    assert.equal(2, auctionIndex)
+
+    // now claiming should not be possible and return == 0
+    await setAndCheckAuctionStarted(eth, gno)
+    await waitUntilPriceIsXPercentOfPreviousPrice(eth, gno, 1.5)
+    const [closingPriceNum] = (await dx.closingPrices.call(gno.address, eth.address, auctionIndex - 1)).map(i => i.toNumber())
+
+    // checking that test is executed correctly
+    assert.equal(closingPriceNum, 0)
+    logger('here it is', closingPriceNum)
+    const [claimedAmount] = (await dx.claimBuyerFunds.call(gno.address, eth.address, buyer1, auctionIndex - 1)).map(i => i.toNumber())
+
+    // checking that right amount is claimed
+    assert.equal(claimedAmount, 0)
   })
 })
