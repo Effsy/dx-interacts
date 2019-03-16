@@ -40,17 +40,23 @@ const DxInteracts = artifacts.require("DxInteracts")
 contract('DxInteracts - claim and withdrawal', accounts => {
   // const [, seller1] = accounts
   
+  
   before(async () => {
-    eth = await EtherToken.deployed();
-    gno = await TokenGNO.deployed();
-    mgn = await TokenFRT.deployed();
-    dx = await DutchExchange.at(DutchExchangeProxy.address);
-    dxi = await DxInteracts.deployed();
-
-    feeRatio = 1 / 200;
+      eth = await EtherToken.deployed();
+      gno = await TokenGNO.deployed();
+      mgn = await TokenFRT.deployed();
+      dx = await DutchExchange.at(DutchExchangeProxy.address);
+      dxi = await DxInteracts.deployed();
+      
+      feeRatio = 1 / 200;
+      
+      await addTokenPair();
+    })
+    
+  beforeEach(async () => {
+      await postSellOrder();
   })
-
-
+    
   const getTokenBalance = async (account, token) => (await dx.balances.call(token.address || token, account))
 
   const getAuctionIndex = async (sellToken, buyToken) =>
@@ -200,9 +206,6 @@ contract('DxInteracts - claim and withdrawal', accounts => {
   }
 
   it('user can claim his tokens when auction is closed', async () => {
-    await addTokenPair();
-    await postSellOrder();
-    
     // TODO: test claiming functionality
   })
 })
