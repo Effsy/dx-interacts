@@ -77,19 +77,31 @@ contract DxInteracts is DxMath, SafeTransfer {
         sellerBalances[sellToken][buyToken][auctionIndex][msg.sender] = newSellerBal;
     }
 
+    /// @dev anyone can claim the funds, manage balance only when user wants to withdraw
     function claimSellerFunds(address sellToken, address buyToken, address user, uint auctionIndex)
         public
         returns (uint returned, uint frtsIssued)
     {
+        // Token => Token =>  auctionIndex => user => amount
+        sellerBalances[sellToken][buyToken][auctionIndex][user] = 0;
         (returned, frtsIssued) = dx.claimSellerFunds(sellToken, buyToken, address(this), auctionIndex);
+        balances[buyToken][user] = add(balances[buyToken][user], returned);
     }
     
     function withdraw(address tokenAddress, uint amount)
         public
-        returns (uint newBal)
+        returns (uint)
     {
+        // TODO: update the seller/buyer balance in case someone else triggered the claim instead of dxi
+        uint usersBalance = balances[tokenAddress][msg.sender];
+        amount = min(amount, usersBalance);
+        require(amount > 0, "The amount must be greater than 0");
+
+        uint newBal = sub(usersBalance, amount);
+
         newBal = dx.withdraw(tokenAddress, amount);
-        // TODO: Check that user actually holds the funds
+        balances[tokenAddress][msg.sender] = newBal;
+
         require(safeTransfer(tokenAddress, msg.sender, amount, false), "The withdraw transfer must succeed");
     }
 
