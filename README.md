@@ -2,6 +2,9 @@
 
 ## Setup Instructions
 
+#### Install dependencies
+`> npm i`
+
 #### Setup ganache
 `> ganache-cli -d --mnemonic 'candy maple cake sugar pudding cream honey rich smooth crumble sweet treat' --defaultBalanceEther '500000000000000000000'`
 
