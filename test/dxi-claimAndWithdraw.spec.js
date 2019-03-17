@@ -175,9 +175,6 @@ contract('DxInteracts - claim and withdrawal', accounts => {
   }  
 
   const postSellOrderWithDxi = async () => {
-
-    
-
     const latestAuctionIndex = await getAuctionIndex(eth, gno)
 
     chai.expect(latestAuctionIndex.toString()).to.be.bignumber.equal(1);
@@ -238,69 +235,6 @@ contract('DxInteracts - claim and withdrawal', accounts => {
   }
 
     /**
-   * waitUntilPriceIsXPercentOfPreviousPrice
-   * @param {address} ST  => Sell Token
-   * @param {address} BT  => Buy Token
-   * @param {unit}    p   => percentage of the previous price
-   */
-  const waitUntilPriceIsXPercentOfPreviousPrice = async (ST, BT, p) => {
-    const [getAuctionIndex, getAuctionStart] = await Promise.all([
-      dx.getAuctionIndex.call(ST.address, BT.address),
-      dx.getAuctionStart.call(ST.address, BT.address)
-    ])
-
-    const currentIndex = getAuctionIndex
-    const startingTimeOfAuction = getAuctionStart
-    let priceBefore = 1
-
-    
-    let result = (await dx.getCurrentAuctionPrice.call(ST.address, BT.address, currentIndex))
-    let num = result[0]
-    let den = result[1]
-    // console.log(await dx.getCurrentAuctionPrice.call(ST.address, BT.address, currentIndex))
-    priceBefore = num.div(den)
-    
-    console.log(`
-    Price BEFORE waiting until Price = initial Closing Price (2) * 2
-    ==============================
-    Price.num             = ${num}
-    Price.den             = ${den}
-    Price at this moment  = ${(priceBefore)}
-    ==============================
-    `)
-    
-    
-    const timeToWaitFor = Math.ceil((86400 - p * 43200) / (1 + p)) + startingTimeOfAuction
-    // wait until the price is good
-    await wait(startingTimeOfAuction - timestamp())
-    
-    
-    (result = (await dx.getCurrentAuctionPrice.call(ST.address, BT.address, currentIndex)))
-    num = result[0]
-    den = result[1]
-    const priceAfter = num.div(den)
-    console.log(`
-      Price AFTER waiting until Price = ${p * 100}% of ${priceBefore / 2} (initial Closing Price)
-      ==============================
-      Price.num             = ${num}
-      Price.den             = ${den}
-      Price at this moment  = ${(priceAfter)}
-      ==============================
-    `)
-    
-    assert.equal(timestamp() >= timeToWaitFor, true)
-    // assert.isAtLeast(priceAfter, (priceBefore / 2) * p)
-
-    return timeToWaitFor
-  }
-
-  const getClearingTime = async (sellToken, buyToken, auctionIndex) => {
-    return (await dx.getClearingTime.call(sellToken.address ||
-      sellToken, buyToken.address ||
-      buyToken, auctionIndex))
-  }
-  
-    /**
    * postBuyOrder
    * @param {address} ST      => Sell Token
    * @param {address} BT      => Buy Token
@@ -335,33 +269,27 @@ contract('DxInteracts - claim and withdrawal', accounts => {
     // TODO: test claiming functionality
     // prepare test by starting and clearing new auction
     let auctionIndex = await getAuctionIndex(eth, gno)
+
     await Promise.all([
       postSellOrder(gno, eth, 0, BigNumber(10e18), seller2),
       postSellOrder(eth, gno, 0, BigNumber(10e18), seller2)
     ])
-    await waitUntilPriceIsXPercentOfPreviousPrice(eth, gno, 1)
-    await postBuyOrder(eth, gno, auctionIndex, 2 * BigNumber(10e18), buyer1)
 
-    // check that clearingTime was saved
-    const clearingTime = await getClearingTime(gno, eth, auctionIndex)
-    const now = timestamp()
-    assert.equal(clearingTime, now, 'clearingTime was set')
+    // skip ~6hrs
+    await wait(2200000);
+    await postBuyOrder(eth, gno, auctionIndex, BigNumber(20e18), buyer1)
+    await wait(2200000);
 
-    auctionIndex = await getAuctionIndex()
-    await setAndCheckAuctionStarted(eth, gno)
-    assert.equal(2, auctionIndex)
+    await dxi.claimSellerFunds(eth.address, gno.address, auctionIndex)
+    chai.expect((await getTokenBalance(dxi.address, gno.address)).toString()).to.be.bignumber.equal(50e18.toString());
 
-    // now claiming should not be possible and return == 0
-    await setAndCheckAuctionStarted(eth, gno)
-    await waitUntilPriceIsXPercentOfPreviousPrice(eth, gno, 1.5)
-    const [closingPriceNum] = (await dx.closingPrices.call(gno.address, eth.address, auctionIndex - 1)).map(i => i.toNumber())
+    const amountToWithdraw = BigNumber(9950)
+    let before = await gno.balanceOf(accounts[0])
+    await dxi.withdraw(gno.address, amountToWithdraw);
+    let after = await gno.balanceOf(accounts[0])
+    let diff = BigNumber(after).minus(before)
 
-    // checking that test is executed correctly
-    assert.equal(closingPriceNum, 0)
-    logger('here it is', closingPriceNum)
-    const [claimedAmount] = (await dx.claimBuyerFunds.call(gno.address, eth.address, buyer1, auctionIndex - 1)).map(i => i.toNumber())
-
-    // checking that right amount is claimed
-    assert.equal(claimedAmount, 0)
+    chai.expect(diff).to.be.bignumber.equal(amountToWithdraw)
+    chai.expect((await getTokenBalance(dxi.address, gno.address)).toString()).to.be.bignumber.equal(BigNumber(50e18).minus(amountToWithdraw));
   })
 })
