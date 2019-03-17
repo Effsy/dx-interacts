@@ -10,6 +10,8 @@ pragma solidity ^0.5.2;
 // See contract for more details:
 //    https://github.com/gnosis/dx-contracts/blob/master/contracts/DxDevDependencies.sol
 
-import "@gnosis.pm/dx-contracts/contracts/DxDevDependencies.sol";
+// import "@gnosis.pm/dx-contracts/contracts/DxDevDependencies.sol";
+import "@gnosis.pm/gno-token/contracts/TokenGNO.sol";
+
 
 contract Dependencies {}
