@@ -27,59 +27,73 @@ contract DxInteracts is DxMath, SafeTransfer {
     }
 
     function sellEther(address buyToken) 
-        public
+        external
         payable
         // returns (bool)
-        returns (uint auctionIndex, uint newSellerBal)
+        returns (uint newBal, uint auctionIndex, uint newSellerBal)
     {
         ethToken.deposit.value(msg.value)();
         require(ethToken.approve(address(dx), msg.value), "fail to approve eth token");
-        depositToken(address(ethToken), msg.value);
-        return postSellOrder(address(ethToken), buyToken, 0, msg.value);
+        newBal = _depositToken(address(ethToken), msg.value, msg.sender);
+        (auctionIndex, newSellerBal) = _postSellOrder(address(ethToken), buyToken, 0, msg.value, msg.sender);
     }
 
     function depositToken(address _token, uint _amount)
-        public
+        external
+        returns (uint newBal)
+    {
+        return _depositToken(_token, _amount, msg.sender);
+    }
+
+    function _depositToken(address _token, uint _amount, address user)
+        internal
         returns (uint newBal)
     {
         Token(_token).approve(address(dx), _amount);
         newBal = dx.deposit(_token, _amount);
-        balances[_token][msg.sender] = newBal;
+        balances[_token][user] = newBal;
     }
 
     function depositEther()
-        public
+        external
         payable
         returns (uint newBal)
     {
         ethToken.deposit.value(msg.value)();
         ethToken.approve(address(dx), msg.value);
-        newBal = depositToken(address(ethToken), msg.value);
+        newBal = _depositToken(address(ethToken), msg.value, msg.sender);
     }
 
     function depositAndSell(address sellToken, address buyToken, uint _amount)
-        public
-        returns (uint auctionIndex, uint newSellerBal)
+        external
+        returns (uint newBal, uint auctionIndex, uint newSellerBal)
     {
         // check dx's SafeTransfer.sol
         Token(sellToken).approve(address(dx), _amount);
         // TODO: Assess calling dx depositAndSell to save gas from saving state changes to balances
-        depositToken(sellToken, _amount);
-        return postSellOrder(sellToken, buyToken, 0, _amount);
+        newBal = _depositToken(sellToken, _amount, msg.sender);
+        (auctionIndex, newSellerBal) = _postSellOrder(sellToken, buyToken, 0, _amount, msg.sender);
     }
 
     function postSellOrder(address sellToken, address buyToken, uint auctionIndex, uint amount)
-        public
+        external
         returns (uint newSellerBal, uint postedAuctionIndex)
     {
-        (newSellerBal, postedAuctionIndex) = dx.postSellOrder(sellToken, buyToken, auctionIndex, amount);
-        balances[sellToken][msg.sender] = sub(balances[sellToken][msg.sender], amount);
-        sellerBalances[sellToken][buyToken][auctionIndex][msg.sender] = newSellerBal;
+        return _postSellOrder(sellToken, buyToken, auctionIndex, amount, msg.sender);
+    }
+
+    function _postSellOrder(address sellToken, address buyToken, uint auctionIndex, uint amount, address user)
+        internal
+        returns (uint newSellerBal, uint postedAuctionIndex)
+    {
+        (postedAuctionIndex, newSellerBal) = dx.postSellOrder(sellToken, buyToken, auctionIndex, amount);
+        balances[sellToken][user] = sub(balances[sellToken][user], amount);
+        sellerBalances[sellToken][buyToken][auctionIndex][user] = newSellerBal;
     }
 
     /// @dev anyone can claim the funds, manage balance only when user wants to withdraw
-    function claimSellerFunds(address sellToken, address buyToken, address user, uint auctionIndex)
-        public
+    function _claimSellerFunds(address sellToken, address buyToken, uint auctionIndex, address user)
+        internal
         returns (uint returned, uint frtsIssued)
     {
         // Token => Token =>  auctionIndex => user => amount
@@ -87,22 +101,35 @@ contract DxInteracts is DxMath, SafeTransfer {
         (returned, frtsIssued) = dx.claimSellerFunds(sellToken, buyToken, address(this), auctionIndex);
         balances[buyToken][user] = add(balances[buyToken][user], returned);
     }
+
+    /// @dev anyone can claim the funds, manage balance only when user wants to withdraw
+    function claimSellerFunds(address sellToken, address buyToken, uint auctionIndex)
+        external
+        returns (uint returned, uint frtsIssued)
+    {
+        return _claimSellerFunds(sellToken, buyToken, auctionIndex, msg.sender);
+    }
     
-    function withdraw(address tokenAddress, uint amount)
-        public
-        returns (uint)
+    function withdraw(address tokenAddress, uint amount) 
+        external
+        returns (uint newBal)
+    {
+        return _withdraw(tokenAddress, amount, msg.sender);
+    }
+    
+    function _withdraw(address tokenAddress, uint amount, address user)
+        internal
+        returns (uint newBal)
     {
         // TODO: update the seller/buyer balance in case someone else triggered the claim instead of dxi
-        uint usersBalance = balances[tokenAddress][msg.sender];
-        amount = min(amount, usersBalance);
-        require(amount > 0, "The amount must be greater than 0");
-
-        uint newBal = sub(usersBalance, amount);
+        uint usersBalance = balances[tokenAddress][user];
+        
+        require(amount <= usersBalance, "The user balance must be greater than the amount");
 
         newBal = dx.withdraw(tokenAddress, amount);
-        balances[tokenAddress][msg.sender] = newBal;
+        balances[tokenAddress][user] = newBal;
 
-        require(safeTransfer(tokenAddress, msg.sender, amount, false), "The withdraw transfer must succeed");
+        require(safeTransfer(tokenAddress, user, amount, false), "The withdraw transfer must succeed");
     }
 
     function addTokenPair(
