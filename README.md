@@ -20,4 +20,4 @@
 #### Warning
 
 Right now anyone can claim tokens from the dxi contracts. 
-Dev branch will soon have functionality covering this.
+Dev branch already has functionality that fixes this, and will be merged into master soon.
