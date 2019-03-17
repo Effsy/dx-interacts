@@ -175,9 +175,6 @@ contract('DxInteracts - claim and withdrawal', accounts => {
   }  
 
   const postSellOrderWithDxi = async () => {
-
-    
-
     const latestAuctionIndex = await getAuctionIndex(eth, gno)
 
     chai.expect(latestAuctionIndex.toString()).to.be.bignumber.equal(1);
@@ -281,7 +278,18 @@ contract('DxInteracts - claim and withdrawal', accounts => {
     // skip ~6hrs
     await wait(2200000);
     await postBuyOrder(eth, gno, auctionIndex, BigNumber(20e18), buyer1)
+    await wait(2200000);
 
-    
+    await dxi.claimSellerFunds(eth.address, gno.address, auctionIndex)
+    chai.expect((await getTokenBalance(dxi.address, gno.address)).toString()).to.be.bignumber.equal(50e18.toString());
+
+    const amountToWithdraw = BigNumber(9950)
+    let before = await gno.balanceOf(accounts[0])
+    await dxi.withdraw(gno.address, amountToWithdraw);
+    let after = await gno.balanceOf(accounts[0])
+    let diff = BigNumber(after).minus(before)
+
+    chai.expect(diff).to.be.bignumber.equal(amountToWithdraw)
+    chai.expect((await getTokenBalance(dxi.address, gno.address)).toString()).to.be.bignumber.equal(BigNumber(50e18).minus(amountToWithdraw));
   })
 })
