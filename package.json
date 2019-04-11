@@ -6,7 +6,7 @@
   "scripts": {
     "migrate": "npx truffle migrate",
     "dxi-test": "npx truffle test test/dxi*.spec.js",
-    "rpc": "ganache-cli -d --mnemonic 'candy maple cake sugar pudding cream honey rich smooth crumble sweet treat' --defaultBalanceEther '500000000000000000000'"
+    "rpc": "npx ganache-cli -d --mnemonic 'candy maple cake sugar pudding cream honey rich smooth crumble sweet treat' --defaultBalanceEther '500000000000000000000'"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +15,7 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "chai-bignumber": "^3.0.0",
+    "ganache-cli": "^6.4.2",
     "rlp": "^2.2.2",
     "truffle": "^5.0.7",
     "truffle-contract": "^3.0.7",
